@@ -1,0 +1,16 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Server for API MariaDB ",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "MariaDB",
+    "Node",
+    "express"
+  ],
+  "author": "Daniel Soto Jaimes <danielsoto@uninorte.edu.co>",
+  "license": "MIT"
+}
