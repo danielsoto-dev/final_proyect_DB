@@ -15,6 +15,7 @@ app.use(cors());
 
 //routes
 app.use('/api/personas', persona_r);
+
 //error route
 app.use(function (req, res, next) {
   res.status(404);

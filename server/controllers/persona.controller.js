@@ -27,7 +27,10 @@ personaCrtll.getPersonaById = async (req, res) => {
 };
 
 personaCrtll.getPersonaByName = async (req, res) => {
-  const name = req.params.name;
+  const name = req.query.name;
+  if (!name) {
+    res.send('Hola Melyssa 😀');
+  }
   try {
     const query = name
       ? `SELECT * FROM persona WHERE nombre like '${name}%';`

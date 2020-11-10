@@ -8,6 +8,6 @@ const router = Router();
 
 router.route('/').get(getPersonas);
 router.route('/id/:id').get(getPersonaById);
-router.route('/name/:name').get(getPersonaByName);
+router.route('/name').get(getPersonaByName);
 
 module.exports = router;
