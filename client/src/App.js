@@ -1,14 +1,13 @@
 import React from 'react';
-import { ThemeProvider, CSSReset } from '@chakra-ui/core';
+import { ChakraProvider } from '@chakra-ui/core';
 import Header from './components/Header';
 import Main from './components/Main';
 function App() {
   return (
-    <ThemeProvider>
-      <CSSReset />
+    <ChakraProvider>
       <Header />
       <Main></Main>
-    </ThemeProvider>
+    </ChakraProvider>
   );
 }
 
