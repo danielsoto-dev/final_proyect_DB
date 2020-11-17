@@ -19,7 +19,6 @@ export default function Main() {
 
   return (
     <Box>
-      <Input w='200px' placeholder='Ingrese el NRC...' />
       <Grid
         margin={2}
         w='1200px'
@@ -33,6 +32,7 @@ export default function Main() {
         gap={6}
       >
         <Schedule info={personas}></Schedule>
+
         <Filters></Filters>
       </Grid>
     </Box>

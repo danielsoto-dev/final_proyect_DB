@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box } from '@chakra-ui/core';
 import Row from './Row';
 import Column from './Column';
 export default function Schedule({ info }) {
+  const [filters, setFilters] = useState({});
+
   if (info == null) {
     return null;
   }
