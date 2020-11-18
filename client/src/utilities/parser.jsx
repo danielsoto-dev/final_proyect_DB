@@ -5,7 +5,7 @@ export default function parser() {
   for (let i = 0; i < ROWS; i++) {
     myArray1[i] = [];
     for (let j = 0; j < COLUMNS; j++) {
-      myArray1[i][j] = 1;
+      myArray1[i][j] = `Pos ${i}${j}`;
     }
   }
   return myArray1;

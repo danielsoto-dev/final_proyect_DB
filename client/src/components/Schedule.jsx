@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Box } from '@chakra-ui/core';
 import Row from './Row';
 import Column from './Column';
+import { useHourFilters } from '../contexts/HourFilters';
 export default function Schedule({ info }) {
-  const [filters, setFilters] = useState({});
-
+  const { hourFilters, setHourFilters } = useHourFilters();
   if (info == null) {
     return null;
   }
@@ -35,13 +34,17 @@ export default function Schedule({ info }) {
       <tbody>
         {info.map((el, idx) => {
           let color = 'white';
-          if (idx % 2 == 0) {
+          if (idx % 2 === 0) {
             color = 'yellow.300';
           }
           return (
             <Row bgColor={color} key={idx}>
               {el.map((ele, idx) => {
-                return <Column key={idx}>{ele}</Column>;
+                return (
+                  <Column clickable={true} key={idx}>
+                    {ele}
+                  </Column>
+                );
               })}
             </Row>
           );

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 //import axios from 'axios';
 import matrix from '../utilities/parser';
-import { Box, Grid, Input } from '@chakra-ui/core';
+import { Box, Grid } from '@chakra-ui/core';
 import Schedule from './Schedule';
 import Filters from './Filters';
-
+import List from './List';
+import HourFiltersProvider from '../contexts/HourFilters';
 export default function Main() {
   const [personas, setPersonas] = useState(null);
 
@@ -31,9 +32,11 @@ export default function Main() {
         alignContent='center'
         gap={6}
       >
-        <Schedule info={personas}></Schedule>
-
-        <Filters></Filters>
+        <HourFiltersProvider>
+          <Schedule info={personas}></Schedule>
+          <Filters></Filters>
+          <List></List>
+        </HourFiltersProvider>
       </Grid>
     </Box>
   );
