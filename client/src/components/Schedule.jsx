@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Row from './Row';
-import Column from './Column';
+import Cell from './Cell';
 import { useHourFilters } from '../contexts/HourFilters';
 export default function Schedule({ info }) {
   const { hourFilters, setHourFilters } = useHourFilters();
@@ -11,39 +11,36 @@ export default function Schedule({ info }) {
     <table>
       <thead>
         <tr>
-          <Column as='th' rol='header'>
+          <Cell as='th' rol='header'>
             Lunes
-          </Column>
-          <Column as='th' rol='header'>
+          </Cell>
+          <Cell as='th' rol='header'>
             Martes
-          </Column>
-          <Column as='th' rol='header'>
+          </Cell>
+          <Cell as='th' rol='header'>
             Miercoles
-          </Column>
-          <Column as='th' rol='header'>
+          </Cell>
+          <Cell as='th' rol='header'>
             Jueves
-          </Column>
-          <Column as='th' rol='header'>
+          </Cell>
+          <Cell as='th' rol='header'>
             Viernes
-          </Column>
-          <Column as='th' rol='header'>
+          </Cell>
+          <Cell as='th' rol='header'>
             Sabado
-          </Column>
+          </Cell>
         </tr>
       </thead>
       <tbody>
-        {info.map((el, idx) => {
-          let color = 'white';
-          if (idx % 2 === 0) {
-            color = 'yellow.300';
-          }
+        {info.map((row, idx) => {
+          let color = idx % 2 === 0 ? 'white' : 'gray.300';
           return (
             <Row bgColor={color} key={idx}>
-              {el.map((ele, idx) => {
+              {row.map((cell, idx) => {
                 return (
-                  <Column clickable={true} key={idx}>
-                    {ele}
-                  </Column>
+                  <Cell clickable={true} key={idx}>
+                    {cell}
+                  </Cell>
                 );
               })}
             </Row>

@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/core';
 import React from 'react';
 import asignaturas from '../dummyData/asignaturas.json'; //This is de API fetch
 import Row from './Row';
-import Column from './Column';
+import Cell from './Cell';
 
 export default function List() {
   return (
@@ -10,20 +10,20 @@ export default function List() {
       <table>
         <thead>
           <tr>
-            <Column as='th' rol='header'>
+            <Cell as='th' rol='header'>
               NRC
-            </Column>
-            <Column as='th' rol='header'>
+            </Cell>
+            <Cell as='th' rol='header'>
               Nombre
-            </Column>
+            </Cell>
           </tr>
         </thead>
         <tbody>
           {asignaturas.map((asignatura, idx) => {
             return (
               <Row clickable={true} key={idx}>
-                <Column>{asignatura.NRC}</Column>
-                <Column>{asignatura.codigo_asignatura}</Column>
+                <Cell>{asignatura.NRC}</Cell>
+                <Cell>{asignatura.codigo_asignatura}</Cell>
               </Row>
             );
           })}

@@ -2,10 +2,13 @@ import React, { useState } from 'react';
 import { Box } from '@chakra-ui/core';
 
 import { useHourFilters } from '../contexts/HourFilters';
-export default function Column({ rol, children, clickable }) {
+export default function Cell({ rol, children, clickable }) {
+  // ? State for selection Styles
   const [isSelected, setState] = useState(false);
+  // ? use of HourFilter Context.
   const { hourFilters, setHourFilters } = useHourFilters();
-  const color = isSelected ? 'blue.300' : 'inherit';
+
+  const color = isSelected ? 'green.300' : 'inherit';
   const clickBehavior = clickable
     ? () => {
         setState(!isSelected);
@@ -13,10 +16,8 @@ export default function Column({ rol, children, clickable }) {
           setHourFilters(hourFilters.concat(children));
         } else {
           const index = hourFilters.indexOf(children);
-          console.log(index);
           if (index > -1) {
             //! Holy Shit, splice devuelvo los elmininados y deja el resultado en el original WTF!!
-            console.log([...hourFilters]);
             let newState = [...hourFilters];
             newState.splice(index, 1);
             setHourFilters(newState);
