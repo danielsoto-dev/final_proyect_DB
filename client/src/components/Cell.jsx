@@ -23,7 +23,7 @@ export default function Cell({ children, rol, clickable, bgColor }) {
       }
     : null;
   return rol === 'header' ? (
-    <Box as='th' bg='blue.300'>
+    <Box padding={1} as='th' bg='blue.300'>
       {children}
     </Box>
   ) : (

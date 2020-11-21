@@ -1,6 +1,7 @@
-import { Box } from '@chakra-ui/core';
+import { Box, Button } from '@chakra-ui/core';
 import React from 'react';
-import asignaturas from '../dummyData/asignaturas.json'; //This is de API fetch
+import asignaturas from '../dummyData/asignaturas'; //This is de API fetch
+import TableHeader from './TableHeader';
 import Row from './Row';
 import Cell from './Cell';
 
@@ -8,16 +9,7 @@ export default function List() {
   return (
     <Box>
       <table>
-        <thead>
-          <tr>
-            <Cell as='th' rol='header'>
-              NRC
-            </Cell>
-            <Cell as='th' rol='header'>
-              Nombre
-            </Cell>
-          </tr>
-        </thead>
+        <TableHeader headerTitles={['NRC', 'Asignatura']}></TableHeader>
         <tbody>
           {asignaturas.map((asignatura, idx) => {
             return (
@@ -29,6 +21,9 @@ export default function List() {
           })}
         </tbody>
       </table>
+      <Button bgColor='blue.300' variant='solid'>
+        Actualizar asignaturas
+      </Button>
     </Box>
   );
 }
