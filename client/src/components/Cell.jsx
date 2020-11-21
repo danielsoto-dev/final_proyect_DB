@@ -1,31 +1,27 @@
 import React, { useState } from 'react';
 import { Box } from '@chakra-ui/core';
-
+import deleteValue from '../utilities/deleteValue';
 import { useHourFilters } from '../contexts/HourFilters';
-export default function Cell({ rol, children, clickable }) {
+export default function Cell({ children, rol, clickable, bgColor }) {
   // ? State for selection Styles
   const [isSelected, setState] = useState(false);
   // ? use of HourFilter Context.
   const { hourFilters, setHourFilters } = useHourFilters();
 
-  const color = isSelected ? 'green.300' : 'inherit';
+  const color = isSelected && !bgColor ? 'green.300' : bgColor;
   const clickBehavior = clickable
     ? () => {
+        // () => diferencia, buscarla.
         setState(!isSelected);
+        // ? Revisar si es necesario usar Updater
         if (!isSelected) {
-          setHourFilters(hourFilters.concat(children));
+          setHourFilters([...hourFilters, children]);
         } else {
-          const index = hourFilters.indexOf(children);
-          if (index > -1) {
-            //! Holy Shit, splice devuelvo los elmininados y deja el resultado en el original WTF!!
-            let newState = [...hourFilters];
-            newState.splice(index, 1);
-            setHourFilters(newState);
-          }
+          const newState = deleteValue([...hourFilters], children);
+          setHourFilters(newState);
         }
       }
     : null;
-
   return rol === 'header' ? (
     <Box as='th' bg='blue.300'>
       {children}

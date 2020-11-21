@@ -27,7 +27,9 @@ export default function Main() {
         borderWidth={2}
         borderColor='black'
         h='85vh'
+        // gridArea='schedule list'
         templateColumns='950px auto'
+        // templateRows='1fr'
         justifyContent='center'
         alignContent='center'
         gap={6}
