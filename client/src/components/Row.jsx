@@ -1,10 +1,24 @@
 import React, { useState } from 'react';
 import { Box } from '@chakra-ui/core';
-export default function Row({ children, bgColor, clickable }) {
+import deleteValue from '../utilities/deleteValue';
+import { useLectureSelections } from '../contexts/LectureSelections';
+export default function Row({ disable, children, bgColor, clickable }) {
   const [isSelected, setState] = useState(false);
-  const color = isSelected ? 'green.300' : bgColor;
+  const { lectureSelections, setLectureSelections } = useLectureSelections();
 
-  const clickBehavior = clickable ? () => setState(!isSelected) : null;
+  const color = isSelected ? 'green.300' : bgColor;
+  const clickBehavior = clickable
+    ? () => {
+        setState(!isSelected);
+        // ? Revisar si es necesario usar Updater
+        if (!isSelected) {
+          setLectureSelections([...lectureSelections, children]);
+        } else {
+          const newState = deleteValue([...lectureSelections], children);
+          setLectureSelections(newState);
+        }
+      }
+    : null;
 
   return (
     <Box as='tr' onClick={clickBehavior} bg={color}>

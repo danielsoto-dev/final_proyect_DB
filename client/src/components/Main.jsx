@@ -6,6 +6,8 @@ import Schedule from './Schedule';
 import Filters from './Filters';
 import List from './List';
 import HourFiltersProvider from '../contexts/HourFilters';
+import LectureSelectionsProvider from '../contexts/LectureSelections';
+
 export default function Main() {
   const [personas, setPersonas] = useState(null);
 
@@ -35,9 +37,11 @@ export default function Main() {
         gap={6}
       >
         <HourFiltersProvider>
-          <Schedule info={personas}></Schedule>
-          <Filters></Filters>
-          <List></List>
+          <LectureSelectionsProvider>
+            <Schedule info={personas}></Schedule>
+            <Filters></Filters>
+            <List></List>
+          </LectureSelectionsProvider>
         </HourFiltersProvider>
       </Grid>
     </Box>

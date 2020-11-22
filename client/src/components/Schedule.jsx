@@ -5,7 +5,8 @@ import TableBody from './TableBody';
 import { useHourFilters } from '../contexts/HourFilters';
 
 export default function Schedule({ info }) {
-  const { hourFilters, setHourFilters } = useHourFilters();
+  const { hourFilters } = useHourFilters();
+  let count = hourFilters.length;
   const headerTitles = [
     'Hora',
     'Lunes',
@@ -23,6 +24,7 @@ export default function Schedule({ info }) {
     <table>
       <TableHeader headerTitles={headerTitles}></TableHeader>
       <TableBody info={info}></TableBody>
+      <p>{count}</p>
     </table>
   );
 }
