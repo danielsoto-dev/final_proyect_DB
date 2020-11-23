@@ -3,6 +3,7 @@ import React from 'react';
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 import { useHourFilters } from '../contexts/HourFilters';
+import { Box } from '@chakra-ui/core';
 
 export default function Schedule({ info }) {
   const { hourFilters } = useHourFilters();
@@ -21,10 +22,13 @@ export default function Schedule({ info }) {
     return null;
   }
   return (
-    <table>
-      <TableHeader headerTitles={headerTitles}></TableHeader>
-      <TableBody info={info}></TableBody>
+    <>
+      <table width='70%'>
+        <TableHeader headerTitles={headerTitles}></TableHeader>
+        <TableBody info={info}></TableBody>
+      </table>
+
       <p>{count}</p>
-    </table>
+    </>
   );
 }

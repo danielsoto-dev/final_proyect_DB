@@ -1,29 +1,44 @@
-import { Box, Button } from '@chakra-ui/core';
-import React from 'react';
+import { Box, Button, Text, Flex } from '@chakra-ui/core';
+import React, { useState } from 'react';
 import asignaturas from '../dummyData/asignaturas'; //This is de API fetch
-import TableHeader from './TableHeader';
-import Row from './Row';
-import Cell from './Cell';
+import ListItem from './ListItem';
+import deleteValue from '../utilities/deleteValue';
 
 export default function List() {
+  const [selected, setSelected] = useState([]);
+  const clickHandler = (ele, add = true) => {
+    if (add) {
+      setSelected([...selected, ele]);
+    } else {
+      const newArray = deleteValue(selected, (el) => {
+        console.log(`${el.NRC}=== ${ele.NRC}`);
+        return el.NRC === ele.NRC;
+      });
+      setSelected([...newArray]);
+    }
+  };
   return (
-    <Box>
-      <table>
-        <TableHeader headerTitles={['NRC', 'Asignatura']}></TableHeader>
-        <tbody>
-          {asignaturas.map((asignatura, idx) => {
-            return (
-              <Row clickable={true} key={idx}>
-                <Cell>{asignatura.NRC}</Cell>
-                <Cell>{asignatura.codigo_asignatura}</Cell>
-              </Row>
-            );
-          })}
-        </tbody>
-      </table>
-      <Button bgColor='blue.300' variant='solid'>
+    <Flex direction='column'>
+      <Box bgColor='blue.300' p='4px'>
+        <Text fontWeight='bold'> Asignaturas Proyectadas</Text>
+      </Box>
+      {asignaturas.map((asignatura) => {
+        return (
+          <ListItem
+            key={asignatura.codigo_asignatura}
+            asignatura={asignatura}
+            clickHandler={clickHandler}
+          ></ListItem>
+        );
+      })}
+
+      <Button
+        onClick={() => alert(JSON.stringify(selected))}
+        bgColor='blue.300'
+        variant='solid'
+      >
         Actualizar asignaturas
       </Button>
-    </Box>
+    </Flex>
   );
 }

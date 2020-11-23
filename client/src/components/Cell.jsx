@@ -17,7 +17,7 @@ export default function Cell({ children, rol, clickable, bgColor }) {
         if (!isSelected) {
           setHourFilters([...hourFilters, children]);
         } else {
-          const newState = deleteValue([...hourFilters], children);
+          const newState = deleteValue(hourFilters, (ele) => ele === children);
           setHourFilters(newState);
         }
       }
