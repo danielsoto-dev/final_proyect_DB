@@ -12,7 +12,6 @@ export default function List() {
       setSelected([...selected, ele]);
     } else {
       const newArray = deleteValue(selected, (el) => {
-        console.log(`${el.NRC}=== ${ele.NRC}`);
         return el.NRC === ele.NRC;
       });
       setSelected([...newArray]);
@@ -39,6 +38,7 @@ export default function List() {
         bg='orange.600'
         color='white'
         variant='solid'
+        mt='20px'
       >
         Actualizar asignaturas
       </Button>

@@ -8,14 +8,14 @@ import { useHourFilters } from '../contexts/HourFilters';
 export default function TableBody({ info }) {
   const { hourFilters, setHourFilters } = useHourFilters();
   const dataArray = {
-    '3-3': { NRC: 'A1', name: 'Calculo 1' },
-    '3-4': { NRC: 'A1', name: 'Calculo 2' },
-    '3-5': { NRC: 'A1', name: 'Calculo 3' },
-    '3-6': { NRC: 'A1', name: 'Calculo 4' },
+    '13-3': { NRC: 'A1', name: 'Calculo 1' },
+    '13-4': { NRC: 'A1', name: 'Calculo 2' },
+    '13-5': { NRC: 'A1', name: 'Calculo 3' },
+    '13-6': { NRC: 'A1', name: 'Calculo 4' },
     '2-3': { NRC: 'A1', name: 'Física 1' },
     '4-4': { NRC: 'A1', name: 'Física 2' },
     '6-5': { NRC: 'A1', name: 'Física 3' },
-    '7-6': { NRC: 'A1', name: 'Física 4' },
+    '8-6': { NRC: 'A1', name: 'Física 4' },
   };
 
   function handleClick(id) {
@@ -43,6 +43,7 @@ export default function TableBody({ info }) {
                   </Cell>
                 );
               }
+              // ? Arreglar esto cuando haga el fetch real
               const key = `${idx}-${idx2}`;
               let value = key;
               if (key in dataArray) {
