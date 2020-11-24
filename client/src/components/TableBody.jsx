@@ -17,7 +17,7 @@ export default function TableBody({ info }) {
               let color = isHour ? 'blue.200' : '';
               const key = isHour ? idx2 : `${idx}-${idx2}`;
               return (
-                <Cell bgColor={color} clickable={true} key={key}>
+                <Cell id={key} bgColor={color} clickable={true} key={key}>
                   {isHour ? tableData[idx] : key}
                 </Cell>
               );
