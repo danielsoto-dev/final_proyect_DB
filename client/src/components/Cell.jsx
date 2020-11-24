@@ -1,23 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Box } from '@chakra-ui/core';
 export default function Cell({
   children,
   rol,
-  bgColor,
   id,
   handleClick,
-  selected,
-  value,
+  selected = false,
+  bgColor,
 }) {
-  let color = selected && !bgColor ? 'green.300' : bgColor;
-  // useEffect(() => {
-  //   effect;
-  //   return () => {
-  //     cleanup;
-  //   };
-  // }, [value]);
+  let color = selected && !bgColor ? 'red.300' : bgColor;
   return rol === 'header' ? (
-    <Box padding={1} as='th' bg='blue.300'>
+    <Box padding={1} as='th' background='blue.300'>
       {children}
     </Box>
   ) : (

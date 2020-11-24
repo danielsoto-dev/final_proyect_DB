@@ -37,60 +37,57 @@ export default function Main() {
     }
     fetchData();
   }, []);
-  if (error) {
-    return <h1>Error</h1>;
-  }
 
   return (
-    <>
-      <Flex alignItems='center' justifyContent='center' h='80vh'>
-        <HourFiltersProvider>
-          <LectureSelectionsProvider>
-            <Flex
-              w='1400px'
-              justifyContent='space-around'
-              alignContent='center'
-              gap={6}
-            >
-              {!isLogged ? (
-                <Box p='25px'>
-                  <Text mb='8px'>Log-In</Text>
-                  <Input
-                    value={id}
-                    onChange={handleInputChange}
-                    fontSize='16px'
-                    mb='8px'
-                    placeholder='Ingrese su código'
-                    size='sm'
-                  />
-                  <Button onClick={handleLoginSubmit}>
-                    Consultar Asignaturas
-                  </Button>
-                </Box>
-              ) : (
-                <>
-                  <p> Está logeado el Id: {id} </p>
-                  <Button
-                    onClick={() => {
-                      setId();
-                      setIsLogged(false);
-                    }}
-                  >
-                    Deslogear
-                  </Button>
-                </>
-              )}
-              <Schedule info={personas}></Schedule>
-              <Flex flexDir='column'>
-                <Box>
-                  <List></List>
-                </Box>
-                <Filters></Filters>
-              </Flex>
+    <Flex alignItems='center' justifyContent='center' h='80vh'>
+      <HourFiltersProvider>
+        <LectureSelectionsProvider>
+          <Flex
+            w='1400px'
+            justifyContent='space-around'
+            alignContent='center'
+            gap={6}
+          >
+            {!isLogged ? (
+              <Box p='25px'>
+                <Text mb='8px' fontSize='24px'>
+                  Log-In
+                </Text>
+                <Input
+                  value={id}
+                  onChange={handleInputChange}
+                  fontSize='16px'
+                  mb='8px'
+                  placeholder='Ingrese su código'
+                  size='sm'
+                />
+                <Button onClick={handleLoginSubmit}>Ingresar</Button>
+              </Box>
+            ) : (
+              <>
+                <Text mb='8px' fontSize='20px'>
+                  Está logeado el Id: {id}
+                </Text>
+                <Button
+                  onClick={() => {
+                    setId();
+                    setIsLogged(false);
+                  }}
+                >
+                  Deslogear
+                </Button>
+              </>
+            )}
+            <Schedule info={personas}></Schedule>
+            <Flex flexDir='column'>
+              <Box>
+                <List></List>
+              </Box>
+              <Filters></Filters>
             </Flex>
-          </LectureSelectionsProvider>
-        </HourFiltersProvider>
-      </Flex>
-    </>
+          </Flex>
+        </LectureSelectionsProvider>
+      </HourFiltersProvider>
+    </Flex>
   );
 }

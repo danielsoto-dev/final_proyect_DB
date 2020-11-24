@@ -12,6 +12,10 @@ export default function TableBody({ info }) {
     '3-4': { NRC: 'A1', name: 'Calculo 2' },
     '3-5': { NRC: 'A1', name: 'Calculo 3' },
     '3-6': { NRC: 'A1', name: 'Calculo 4' },
+    '2-3': { NRC: 'A1', name: 'Física 1' },
+    '4-4': { NRC: 'A1', name: 'Física 2' },
+    '6-5': { NRC: 'A1', name: 'Física 3' },
+    '7-6': { NRC: 'A1', name: 'Física 4' },
   };
 
   function handleClick(id) {
@@ -30,31 +34,32 @@ export default function TableBody({ info }) {
         return (
           <Row bgColor={color} key={idx}>
             {row.map((_, idx2) => {
-              let isHour = false;
+              // Arreglar comportamiento para celda no utilizable
               let selected = false;
               if (idx2 === 0) {
-                isHour = true;
+                return (
+                  <Cell bgColor={'blue.200'} key={idx2}>
+                    {tableData[idx]}
+                  </Cell>
+                );
               }
-              let color = isHour ? 'blue.200' : '';
-              const key = isHour ? idx2 : `${idx}-${idx2}`;
+              const key = `${idx}-${idx2}`;
               let value = key;
-              if (!isHour && key in dataArray) {
+              if (key in dataArray) {
                 value = dataArray[key].name;
               }
-
               if (hourFilters.includes(key)) {
-                color = 'red.500';
+                console.log(key);
                 selected = true;
               }
               return (
                 <Cell
                   id={key}
                   handleClick={() => handleClick(key)}
-                  bgColor={color}
                   key={key}
                   selected={selected}
                 >
-                  {isHour ? tableData[idx] : value}
+                  {value}
                 </Cell>
               );
             })}

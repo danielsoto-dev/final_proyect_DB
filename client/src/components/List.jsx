@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import asignaturas from '../dummyData/asignaturas'; //This is de API fetch
 import ListItem from './ListItem';
 import deleteValue from '../utilities/deleteValue';
+import { BsArrowCounterclockwise } from 'react-icons/bs';
 
 export default function List() {
   const [selected, setSelected] = useState([]);
@@ -34,7 +35,9 @@ export default function List() {
 
       <Button
         onClick={() => alert(JSON.stringify(selected))}
-        bgColor='blue.300'
+        leftIcon={<BsArrowCounterclockwise />}
+        bg='orange.600'
+        color='white'
         variant='solid'
       >
         Actualizar asignaturas
