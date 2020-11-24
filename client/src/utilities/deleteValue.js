@@ -5,5 +5,6 @@ export default function deleteValue(array, condition) {
   if (index > -1) {
     newArray.splice(index, 1);
   }
+  console.log(newArray);
   return newArray;
 }
