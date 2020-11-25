@@ -39,6 +39,7 @@ export default function List() {
             key={asignatura.codigo_asignatura}
             asignatura={asignatura}
             clickHandler={clickHandler}
+            isDisable={null}
           ></ListItem>
         );
       })}

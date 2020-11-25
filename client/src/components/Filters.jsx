@@ -8,7 +8,13 @@ export default function Filters() {
   const [isModalOpen, setisModalOpen] = useState(false);
   const { setHourFilters } = useHourFilters();
   return (
-    <Flex direction='column' justify='space-around' h='200px'>
+    <Flex
+      mt='20px'
+      padding='25px'
+      direction='column'
+      justify='space-around'
+      h='200px'
+    >
       <Button
         onClick={() => setisModalOpen(true)}
         leftIcon={<BsFilter />}
@@ -32,6 +38,14 @@ export default function Filters() {
         color='white'
       >
         Limpiar Filtros
+      </Button>
+      <Button
+        onClick={() => null}
+        leftIcon={<BsTrash />}
+        bg='orange.600'
+        color='white'
+      >
+        Agregar Horario
       </Button>
     </Flex>
   );

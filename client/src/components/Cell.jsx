@@ -4,7 +4,7 @@ export default function Cell({
   children,
   rol,
   id,
-  handleClick,
+  handleClick = () => {},
   selected = false,
   bgColor,
 }) {
@@ -15,9 +15,9 @@ export default function Cell({
     </Box>
   ) : (
     <Box
+      as='td'
       id={id}
       onClick={handleClick}
-      as='td'
       background={color}
       textAlign='center'
     >

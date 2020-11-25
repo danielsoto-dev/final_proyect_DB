@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Wrapper from './Wrapper';
 import Schedule from './Schedule';
+import ScheduleRead from './ScheduleRead';
 import matrix from '../utilities/parser';
 import List from './List';
 import LectureSelectionsProvider from '../contexts/LectureSelections';
 import HourFiltersProvider from '../contexts/HourFilters';
+import TeachersFiltersProvider from '../contexts/TeachersFilters';
 import Filters from './Filters';
 import { Box, Flex, Input, Text, Button } from '@chakra-ui/core';
 export default function Main() {
@@ -56,6 +58,7 @@ export default function Main() {
                     placeholder='Ingrese su código'
                     size='sm'
                     w='250px'
+                    mr='10px'
                   />
                   <Button
                     bg='orange.600'
@@ -90,10 +93,36 @@ export default function Main() {
             >
               <Schedule scheme={scheme}></Schedule>
               <Flex flexDir='column'>
-                <List></List>
-                <Filters></Filters>
+                <TeachersFiltersProvider>
+                  <List></List>
+                  <Filters></Filters>
+                </TeachersFiltersProvider>
               </Flex>
             </Flex>
+            <Box>
+              <>
+                <Box mb='20px'>
+                  <Text mb='8px' fontSize='24px'>
+                    Buscar Horarios guardados
+                  </Text>
+                  <Input
+                    value={id}
+                    onChange={handleInputChange}
+                    fontSize='16px'
+                    placeholder='Ingrese código para consultar'
+                    size='sm'
+                    w='250px'
+                    mr='10px'
+                  />
+                  <Button bg='orange.600' color='white' onClick={() => ''}>
+                    Ingresar
+                  </Button>
+                </Box>
+                <Box ml='45px'>
+                  <ScheduleRead scheme={scheme}></ScheduleRead>
+                </Box>
+              </>
+            </Box>
           </Wrapper>
         </LectureSelectionsProvider>
       </HourFiltersProvider>
