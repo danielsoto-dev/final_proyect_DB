@@ -3,7 +3,7 @@ import React from 'react';
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 
-export default function Schedule({ info }) {
+export default function Schedule({ scheme }) {
   const headerTitles = [
     'Hora',
     'Lunes',
@@ -14,14 +14,14 @@ export default function Schedule({ info }) {
     'Sabado',
   ];
 
-  if (info == null) {
+  if (scheme == null) {
     return null;
   }
   return (
     <>
       <table width='70%'>
         <TableHeader headerTitles={headerTitles}></TableHeader>
-        <TableBody info={info}></TableBody>
+        <TableBody scheme={scheme}></TableBody>
       </table>
     </>
   );

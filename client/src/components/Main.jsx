@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
-//import axios from 'axios';
-import matrix from '../utilities/parser';
-import { Box, Flex, Input, Text, Button } from '@chakra-ui/core';
+import Wrapper from './Wrapper';
 import Schedule from './Schedule';
-import Filters from './Filters';
+import matrix from '../utilities/parser';
 import List from './List';
-import HourFiltersProvider from '../contexts/HourFilters';
 import LectureSelectionsProvider from '../contexts/LectureSelections';
-
+import HourFiltersProvider from '../contexts/HourFilters';
+import Filters from './Filters';
+import { Box, Flex, Input, Text, Button } from '@chakra-ui/core';
 export default function Main() {
-  const [personas, setPersonas] = useState(null);
+  const scheme = matrix();
   const [isLogged, setIsLogged] = useState(false);
   const [error, setError] = useState(false);
   const [id, setId] = useState('');
@@ -28,64 +27,74 @@ export default function Main() {
       setError(true);
     }
   };
-  //MIRAR DONDE Y QUÉ DEBO FETCHEAR
-  useEffect(() => {
-    async function fetchData() {
-      //const result = await axios('http://localhost:3001/api/personas/id/2');
-      const ma = await matrix();
-      setPersonas(ma);
-    }
-    fetchData();
-  }, []);
+  // //MIRAR DONDE Y QUÉ DEBO FETCHEAR
+  // useEffect(() => {
+  //   async function fetchData() {
+  //     //const result = await axios('http://localhost:3001/api/personas/id/2');
+  //     const ma = await matrix();
+  //     setPersonas(ma);
+  //   }
+  //   fetchData();
+  // }, []);
 
   return (
     <Flex alignItems='center' justifyContent='center' h='80vh'>
       <HourFiltersProvider>
         <LectureSelectionsProvider>
-          <Flex
-            w='1400px'
-            justifyContent='space-around'
-            alignContent='center'
-            gap={6}
-          >
-            {!isLogged ? (
-              <Box p='25px'>
-                <Text mb='8px' fontSize='24px'>
-                  Log-In
-                </Text>
-                <Input
-                  value={id}
-                  onChange={handleInputChange}
-                  fontSize='16px'
-                  mb='8px'
-                  placeholder='Ingrese su código'
-                  size='sm'
-                />
-                <Button onClick={handleLoginSubmit}>Ingresar</Button>
-              </Box>
-            ) : (
-              <>
-                <Text mb='8px' fontSize='20px'>
-                  Está logeado el Id: {id}
-                </Text>
-                <Button
-                  onClick={() => {
-                    setId();
-                    setIsLogged(false);
-                  }}
-                >
-                  Deslogear
-                </Button>
-              </>
-            )}
-            <Schedule info={personas}></Schedule>
-            <Flex flexDir='column'>
-              <Box>
+          <Wrapper>
+            <Box p='25px'>
+              {!isLogged ? (
+                <>
+                  <Text mb='8px' fontSize='24px'>
+                    Log-In
+                  </Text>
+                  <Input
+                    value={id}
+                    onChange={handleInputChange}
+                    fontSize='16px'
+                    mb='8px'
+                    placeholder='Ingrese su código'
+                    size='sm'
+                    w='250px'
+                  />
+                  <Button
+                    bg='orange.600'
+                    color='white'
+                    onClick={handleLoginSubmit}
+                  >
+                    Ingresar
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Text mb='8px' fontSize='20px'>
+                    Está logeado el Id: {id}
+                  </Text>
+                  <Button
+                    bg='orange.600'
+                    color='white'
+                    onClick={() => {
+                      setId();
+                      setIsLogged(false);
+                    }}
+                  >
+                    Deslogear
+                  </Button>
+                </>
+              )}
+            </Box>
+            <Flex
+              w='1400px'
+              justifyContent='space-around'
+              alignContent='center'
+            >
+              <Schedule scheme={scheme}></Schedule>
+              <Flex flexDir='column'>
                 <List></List>
-              </Box>
-              <Filters></Filters>
+                <Filters></Filters>
+              </Flex>
             </Flex>
-          </Flex>
+          </Wrapper>
         </LectureSelectionsProvider>
       </HourFiltersProvider>
     </Flex>

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Button, Flex } from '@chakra-ui/core';
-import { BsFilter, BsTrash } from 'react-icons/bs';
 import EffectModal from './EffectModal';
 import { useHourFilters } from '../contexts/HourFilters';
+import { Button, Flex } from '@chakra-ui/core';
+import { BsFilter, BsTrash } from 'react-icons/bs';
+
 export default function Filters() {
   const [isModalOpen, setisModalOpen] = useState(false);
   const { setHourFilters } = useHourFilters();
