@@ -20,7 +20,7 @@ const invalidInput = (toast) => {
     title: 'Entrada no valida',
     description: 'Verifique el dato ingresado',
     status: 'error',
-    duration: 9000,
+    duration: 3000,
     isClosable: true,
     position: 'bottom-left',
   });
@@ -31,7 +31,7 @@ const cantFindData = (toast) => {
     title: 'No sé encontró el id',
     description: 'Verifique el dato ingresado',
     status: 'error',
-    duration: 9000,
+    duration: 3000,
     isClosable: true,
     position: 'bottom-left',
   });
@@ -40,12 +40,15 @@ const cantFindData = (toast) => {
 export default function Main() {
   const scheme = matrix();
   const toast = useToast();
-  const [generalData, setGeneralData] = useState([]);
+  const [generalData, setGeneralData] = useState({
+    hourArray: {},
+    listArray: [],
+    profArray: [],
+  });
   const [isLogged, setIsLogged] = useState(false);
   const [student, setStudent] = useState({});
   const [id, setId] = useState('');
   const [id2, setId2] = useState('');
-
   const handleInputChange2 = (event) => {
     setId2(event.target.value);
   };
@@ -114,10 +117,13 @@ export default function Main() {
               justifyContent='space-around'
               alignContent='center'
             >
-              <Schedule hours={generalData} scheme={scheme}></Schedule>
+              <Schedule
+                hours={generalData.hourArray}
+                scheme={scheme}
+              ></Schedule>
               <Flex flexDir='column'>
                 <TeachersFiltersProvider>
-                  <List></List>
+                  <List items={generalData.listArray}></List>
                   <Filters></Filters>
                 </TeachersFiltersProvider>
               </Flex>

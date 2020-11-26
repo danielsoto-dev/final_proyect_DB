@@ -1,15 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ListItem from './ListItem';
-import deleteValue from '../utilities/deleteValue';
-import asignaturas from '../dummyData/asignaturas'; //This is de API fetch
+import deleteValue from '../utilities/deleteValue'; //This is de API fetch
 import { useLectureSelections } from '../contexts/LectureSelections';
 import { BsArrowCounterclockwise } from 'react-icons/bs';
 import { Box, Button, Text, Flex } from '@chakra-ui/core';
 import axios from 'axios';
 
-export default function List() {
+export default function List({ items = [] }) {
+  useEffect(() => {}, [items]);
   const [selected, setSelected] = useState([]);
   const { setLectureSelections } = useLectureSelections();
+  // ? Puedo guardar solo los NRC a ver
   const clickHandler = (ele, add = true) => {
     if (add) {
       setSelected([...selected, ele]);
@@ -28,9 +29,6 @@ export default function List() {
       .then(({ data }) => console.log(data));
     setLectureSelections();
   };
-  const blockLectures = (blockedHours) => {
-    return null;
-  };
   return (
     <Flex direction='column'>
       <Box bgColor='blue.300' p='4px'>
@@ -38,13 +36,13 @@ export default function List() {
           Cursos Proyectados
         </Text>
       </Box>
-      {asignaturas.map((asignatura) => {
+      {items.map((item) => {
         return (
           <ListItem
-            key={asignatura.codigo_asignatura}
-            asignatura={asignatura}
+            key={item.nrc}
+            asignatura={item}
             clickHandler={clickHandler}
-            isDisable={true}
+            isDisable={item.isBlocked ? true : false}
           ></ListItem>
         );
       })}

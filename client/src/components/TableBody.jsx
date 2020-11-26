@@ -4,39 +4,43 @@ import Cell from './Cell';
 import tableData from '../utilities/tableData';
 import deleteValue from '../utilities/deleteValue';
 import { useHourFilters } from '../contexts/HourFilters';
-const data = {
-  '13-3': { NRC: 'A1', name: 'Calculo 1' },
-  '13-4': { NRC: 'A2', name: 'Calculo 2' },
-  '13-5': { NRC: 'A3', name: 'Calculo 3' },
-  '13-6': { NRC: 'A4', name: 'Calculo 4' },
-  '2-3': { NRC: 'B1', name: 'Física 1' },
-};
 
-// function isBlocked(hourFilters, dataArray) {
-//   for (let index = 0; index < hourFilters.length; index++) {
-//     if (hourFilters[index] in dataArray) {
-//       alert(
-//         `La materia ${
-//           dataArray[hourFilters[index]].name
-//         } no puede proyectarse para estos filtros`
-//       );
-//       let newState = { ...dataArray };
-//       delete newState[hourFilters[index]];
-//       setDataArray(newState);
-//     }
-//   }
-// }
-// isBlocked(hourFilters, dataArray);
+function blockNRCbyId(hours, id) {
+  let nrc_buscado = hours[id].nrc;
+  if (nrc_buscado) {
+    let iterable = Object.entries(hours);
+    iterable.forEach((element) => {
+      if (element[1].nrc === nrc_buscado) {
+        element[1].isBlocked = true;
+      }
+    });
+  }
+}
 
+function unblockNRCbyId(hours, id) {
+  let nrc_buscado = hours[id].nrc;
+  if (nrc_buscado) {
+    let iterable = Object.entries(hours);
+    iterable.forEach((element) => {
+      if (element[1].nrc === nrc_buscado) {
+        element[1].isBlocked = false;
+      }
+    });
+  }
+}
 export default function TableBody({ scheme, hours }) {
   const { hourFilters, setHourFilters } = useHourFilters();
-  const [dataArray, setDataArray] = useState(data);
+  const [dataArray, setDataArray] = useState([]);
 
   function handleClick(id) {
+    let isInHours = id in hours;
     if (hourFilters.includes(id)) {
       const newState = deleteValue(hourFilters, (el_id) => el_id === id);
+      if (isInHours) unblockNRCbyId(hours, id);
       setHourFilters(newState);
     } else {
+      //! CUIDADO CON ESTE LLAMADO
+      if (isInHours) blockNRCbyId(hours, id);
       setHourFilters([...hourFilters, id]);
     }
   }
@@ -59,8 +63,8 @@ export default function TableBody({ scheme, hours }) {
               // ? Arreglar esto cuando haga el fetch real
               const key = `${idx}-${idx2}`;
               let value;
-              if (key in hours) {
-                value = hours[key];
+              if (key in hours && !hours[key].isBlocked) {
+                value = hours[key].materia + hours[key].nrc;
               }
               //? Esto ^ ^ se irá cuando ya haya datos de verdad
               return (
@@ -70,6 +74,7 @@ export default function TableBody({ scheme, hours }) {
                   handleClick={() => handleClick(key)}
                   key={key}
                   selected={hourFilters.includes(key) ? true : false}
+                  //selected={hours[key] && hours[key].isBlocked ? true : false}
                 >
                   {value}
                 </Cell>

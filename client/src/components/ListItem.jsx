@@ -11,16 +11,14 @@ export default function ListItem({
     // ? This logic needs to change when fetching real data
     if (!isSelected) {
       clickHandler({
-        NRC: asignatura.NRC,
-        codAsig: asignatura.codigo_asignatura,
-        nameDoc: asignatura.codigo_docente,
+        NRC: asignatura.nrc,
+        codAsig: asignatura.nombreAsignatura,
       });
     } else {
       clickHandler(
         {
-          NRC: asignatura.NRC,
-          codAsig: asignatura.codigo_asignatura,
-          nameDoc: asignatura.codigo_docente,
+          NRC: asignatura.nrc,
+          codAsig: asignatura.nombreAsignatura,
         },
         false
       );
@@ -39,8 +37,7 @@ export default function ListItem({
       padding='3px'
     >
       <Text>
-        NRC: {asignatura.NRC} | {asignatura.codigo_asignatura} |{' '}
-        {asignatura.codigo_docente}
+        NRC: {asignatura.nrc} | {asignatura.nombreAsignatura}
       </Text>
     </Box>
   );
