@@ -53,18 +53,3 @@ personaCrtll.getProyectadasById = async (req, res) => {
   }
 };
 module.exports = personaCrtll;
-// personaCrtll.getEstudiantesByName = async (req, res) => {
-//   const name = req.query.name;
-//   if (!name) {
-//     res.send('Hola Melyssa 😀');
-//   }
-//   try {
-//     const query = name
-//       ? `SELECT * FROM estudiante WHERE nombre like '${name}%';`
-//       : 'SELECT * FROM estudiante;';
-//     const result = await db.query(query);
-//     res.send(result);
-//   } catch (e) {
-//     console.log('Error', e);
-//   }
-// };

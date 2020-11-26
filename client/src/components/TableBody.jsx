@@ -28,7 +28,7 @@ const data = {
 // }
 // isBlocked(hourFilters, dataArray);
 
-export default function TableBody({ scheme }) {
+export default function TableBody({ scheme, hours }) {
   const { hourFilters, setHourFilters } = useHourFilters();
   const [dataArray, setDataArray] = useState(data);
 
@@ -56,11 +56,11 @@ export default function TableBody({ scheme }) {
                 );
               }
               // ? Arreglar esto cuando haga el fetch real
+              // ? Arreglar esto cuando haga el fetch real
               const key = `${idx}-${idx2}`;
-
-              let value = key;
-              if (key in dataArray) {
-                value = dataArray[key].name;
+              let value;
+              if (key in hours) {
+                value = hours[key];
               }
               //? Esto ^ ^ se irá cuando ya haya datos de verdad
               return (

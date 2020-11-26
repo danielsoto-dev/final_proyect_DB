@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Wrapper from './Wrapper';
 import TeachersFiltersProvider from '../contexts/TeachersFilters';
 import ScheduleRead from './ScheduleRead';
@@ -9,6 +9,7 @@ import LectureSelectionsProvider from '../contexts/LectureSelections';
 import HourFiltersProvider from '../contexts/HourFilters';
 import Filters from './Filters';
 import BasicInput from './BasicInput';
+import { createDataSets } from '../utilities/createDataSets';
 import { Box, Flex, Text, Button } from '@chakra-ui/core';
 import { useToast } from '@chakra-ui/core';
 
@@ -39,12 +40,14 @@ const cantFindData = (toast) => {
 export default function Main() {
   const scheme = matrix();
   const toast = useToast();
+  const [generalData, setGeneralData] = useState([]);
   const [isLogged, setIsLogged] = useState(false);
   const [student, setStudent] = useState({});
   const [id, setId] = useState('');
   const [id2, setId2] = useState('');
+
   const handleInputChange2 = (event) => {
-    setId(event.target.value);
+    setId2(event.target.value);
   };
   const handleInputChange = (event) => {
     setId(event.target.value);
@@ -63,6 +66,10 @@ export default function Main() {
       if (consulta.data.length === 0) {
         cantFindData(toast);
       } else {
+        let subConsulta = await axios.get(
+          `http://localhost:3001/api/estudiantes/proyectadas/${id}`
+        );
+        setGeneralData(createDataSets(subConsulta.data));
         setStudent(consulta.data[0]);
         setIsLogged(true);
       }
@@ -70,6 +77,7 @@ export default function Main() {
       invalidInput(toast);
     }
   };
+
   return (
     <Flex mt='50px' alignItems='center' justifyContent='center'>
       <HourFiltersProvider>
@@ -106,7 +114,7 @@ export default function Main() {
               justifyContent='space-around'
               alignContent='center'
             >
-              <Schedule scheme={scheme}></Schedule>
+              <Schedule hours={generalData} scheme={scheme}></Schedule>
               <Flex flexDir='column'>
                 <TeachersFiltersProvider>
                   <List></List>

@@ -3,23 +3,6 @@ import Row from './Row';
 import Cell from './Cell';
 import tableData from '../utilities/tableData';
 const data = {};
-
-// function isBlocked(hourFilters, dataArray) {
-//   for (let index = 0; index < hourFilters.length; index++) {
-//     if (hourFilters[index] in dataArray) {
-//       alert(
-//         `La materia ${
-//           dataArray[hourFilters[index]].name
-//         } no puede proyectarse para estos filtros`
-//       );
-//       let newState = { ...dataArray };
-//       delete newState[hourFilters[index]];
-//       setDataArray(newState);
-//     }
-//   }
-// }
-// isBlocked(hourFilters, dataArray);
-
 export default function TableBody({ scheme }) {
   const [dataArray, setDataArray] = useState(data);
 
