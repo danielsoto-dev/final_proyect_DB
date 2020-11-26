@@ -19,7 +19,7 @@ export default function Schedule({ scheme }) {
   }
   return (
     <>
-      <table width='70%'>
+      <table height='100%' width='70%'>
         <TableHeader headerTitles={headerTitles}></TableHeader>
         <TableBody scheme={scheme}></TableBody>
       </table>

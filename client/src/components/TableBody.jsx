@@ -6,13 +6,10 @@ import deleteValue from '../utilities/deleteValue';
 import { useHourFilters } from '../contexts/HourFilters';
 const data = {
   '13-3': { NRC: 'A1', name: 'Calculo 1' },
-  '13-4': { NRC: 'A1', name: 'Calculo 2' },
-  '13-5': { NRC: 'A1', name: 'Calculo 3' },
-  '13-6': { NRC: 'A1', name: 'Calculo 4' },
-  '2-3': { NRC: 'A1', name: 'Física 1' },
-  '4-4': { NRC: 'A1', name: 'Física 2' },
-  '6-5': { NRC: 'A1', name: 'Física 3' },
-  '8-6': { NRC: 'A1', name: 'Física 4' },
+  '13-4': { NRC: 'A2', name: 'Calculo 2' },
+  '13-5': { NRC: 'A3', name: 'Calculo 3' },
+  '13-6': { NRC: 'A4', name: 'Calculo 4' },
+  '2-3': { NRC: 'B1', name: 'Física 1' },
 };
 
 // function isBlocked(hourFilters, dataArray) {
@@ -43,7 +40,6 @@ export default function TableBody({ scheme }) {
       setHourFilters([...hourFilters, id]);
     }
   }
-  console.log(hourFilters);
   return (
     <tbody>
       {scheme.map((row, idx) => {

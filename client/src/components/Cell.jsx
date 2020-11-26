@@ -20,6 +20,7 @@ export default function Cell({
       onClick={handleClick}
       background={color}
       textAlign='center'
+      p='3px'
     >
       {children}
     </Box>

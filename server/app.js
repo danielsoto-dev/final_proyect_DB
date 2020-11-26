@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const persona_r = require('./routes/persona');
+const estudiantes_r = require('./routes/estudiante');
 require('dotenv').config();
 var app = express();
 
@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cors());
 
 //routes
-app.use('/api/personas', persona_r);
+app.use('/api/estudiantes', estudiantes_r);
 
 //error route
 app.use(function (req, res, next) {

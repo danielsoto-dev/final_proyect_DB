@@ -20,18 +20,23 @@ export default function List() {
       setSelected([...newArray]);
     }
   };
-  //! CHANGE THIS TO FETCH THE LECTURES
+
+  //! CHANGE THIS TO FETCH THE LECTURES in Effect
   const fetchLectures = () => {
     axios
       .get('https://jsonplaceholder.typicode.com/users')
       .then(({ data }) => console.log(data));
     setLectureSelections();
   };
-
+  const blockLectures = (blockedHours) => {
+    return null;
+  };
   return (
     <Flex direction='column'>
       <Box bgColor='blue.300' p='4px'>
-        <Text fontWeight='bold'> Asignaturas Proyectadas</Text>
+        <Text textAlign='center' fontWeight='bold'>
+          Cursos Proyectados
+        </Text>
       </Box>
       {asignaturas.map((asignatura) => {
         return (
@@ -39,7 +44,7 @@ export default function List() {
             key={asignatura.codigo_asignatura}
             asignatura={asignatura}
             clickHandler={clickHandler}
-            isDisable={null}
+            isDisable={true}
           ></ListItem>
         );
       })}
