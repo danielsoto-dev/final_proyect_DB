@@ -1,6 +1,5 @@
 import React, { useState, useContext, createContext } from 'react';
 export const BlockedNRCContext = createContext(null);
-
 export function useBlockedNRC() {
   return useContext(BlockedNRCContext);
 }

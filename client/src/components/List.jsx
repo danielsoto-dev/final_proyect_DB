@@ -2,14 +2,15 @@ import React, { useState, useEffect } from 'react';
 import ListItem from './ListItem';
 import deleteValue from '../utilities/deleteValue'; //This is de API fetch
 import { useLectureSelections } from '../contexts/LectureSelections';
+import { useBlockedNRC } from '../contexts/BlockedNRC';
 import { BsArrowCounterclockwise } from 'react-icons/bs';
 import { Box, Button, Text, Flex } from '@chakra-ui/core';
 import axios from 'axios';
 
 export default function List({ items = [] }) {
-  useEffect(() => {}, [items]);
   const [selected, setSelected] = useState([]);
   const { setLectureSelections } = useLectureSelections();
+  const { blockedNRC, setblockedNRC } = useBlockedNRC();
   // ? Puedo guardar solo los NRC a ver
   const clickHandler = (ele, add = true) => {
     if (add) {
@@ -21,13 +22,15 @@ export default function List({ items = [] }) {
       setSelected([...newArray]);
     }
   };
-
+  console.log(items);
   //! CHANGE THIS TO FETCH THE LECTURES in Effect
   const fetchLectures = () => {
-    axios
-      .get('https://jsonplaceholder.typicode.com/users')
-      .then(({ data }) => console.log(data));
-    setLectureSelections();
+    let selectedNRC = [];
+    items.forEach((item) => {
+      if (!item.isBlocked) {
+        selectedNRC.push(item.nrc);
+      }
+    });
   };
   return (
     <Flex direction='column'>
@@ -37,6 +40,11 @@ export default function List({ items = [] }) {
         </Text>
       </Box>
       {items.map((item) => {
+        if (blockedNRC.indexOf(item.nrc) !== -1) {
+          item.isBlocked = true;
+        } else {
+          item.isBlocked = false;
+        }
         return (
           <ListItem
             key={item.nrc}

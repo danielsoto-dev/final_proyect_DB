@@ -4,7 +4,7 @@ import Cell from './Cell';
 import tableData from '../utilities/tableData';
 import deleteValue from '../utilities/deleteValue';
 import { useHourFilters } from '../contexts/HourFilters';
-
+import { useBlockedNRC } from '../contexts/BlockedNRC';
 function blockNRCbyId(hours, id) {
   let nrc_buscado = hours[id].nrc;
   if (nrc_buscado) {
@@ -30,6 +30,7 @@ function unblockNRCbyId(hours, id) {
 }
 export default function TableBody({ scheme, hours, reset }) {
   const { hourFilters, setHourFilters } = useHourFilters();
+  const { blockedNRC, setblockedNRC } = useBlockedNRC();
   const [dataArray, setDataArray] = useState([]);
   if (Object.entries(hourFilters).length === 0) {
     reset();
@@ -38,11 +39,22 @@ export default function TableBody({ scheme, hours, reset }) {
     let isInHours = id in hours;
     if (hourFilters.includes(id)) {
       const newState = deleteValue(hourFilters, (el_id) => el_id === id);
-      if (isInHours) unblockNRCbyId(hours, id);
+      if (isInHours) {
+        const newBlocked = deleteValue(
+          blockedNRC,
+          (el) => el === hours[id].nrc
+        );
+        unblockNRCbyId(hours, id);
+        setblockedNRC([...newBlocked]);
+      }
       setHourFilters(newState);
     } else {
       //! CUIDADO CON ESTE LLAMADO
-      if (isInHours) blockNRCbyId(hours, id);
+
+      if (isInHours) {
+        blockNRCbyId(hours, id);
+        setblockedNRC([...blockedNRC, hours[id].nrc]);
+      }
       setHourFilters([...hourFilters, id]);
     }
   }

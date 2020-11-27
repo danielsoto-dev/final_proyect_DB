@@ -19,7 +19,13 @@ export function createDataSets(generalData) {
     hourArray[idx] = { materia, nrc, isBlocked: false };
     if (nrcSet.has(nrc)) continue;
     nrcSet.add(nrc);
-    listArray.push({ nrc, nombreAsignatura, isBlocked: false, tipo });
+    listArray.push({
+      nrc,
+      nombreAsignatura,
+      nombreProfesor,
+      isBlocked: false,
+      tipo,
+    });
     profArray.push({ nrc, nombreProfesor, isBlocked: false });
     //!  esto es para los horarios
   }
