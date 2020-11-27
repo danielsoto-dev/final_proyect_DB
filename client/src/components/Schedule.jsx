@@ -3,7 +3,7 @@ import React from 'react';
 import TableHeader from './TableHeader';
 import TableBody from './TableBody';
 
-export default function Schedule({ scheme, hours }) {
+export default function Schedule({ scheme, hours, reset }) {
   const headerTitles = [
     'Hora',
     'Lunes',
@@ -21,7 +21,7 @@ export default function Schedule({ scheme, hours }) {
     <>
       <table height='100%' width='70%'>
         <TableHeader headerTitles={headerTitles}></TableHeader>
-        <TableBody hours={hours} scheme={scheme}></TableBody>
+        <TableBody reset={reset} hours={hours} scheme={scheme}></TableBody>
       </table>
     </>
   );

@@ -28,10 +28,12 @@ function unblockNRCbyId(hours, id) {
     });
   }
 }
-export default function TableBody({ scheme, hours }) {
+export default function TableBody({ scheme, hours, reset }) {
   const { hourFilters, setHourFilters } = useHourFilters();
   const [dataArray, setDataArray] = useState([]);
-
+  if (Object.entries(hourFilters).length === 0) {
+    reset();
+  }
   function handleClick(id) {
     let isInHours = id in hours;
     if (hourFilters.includes(id)) {

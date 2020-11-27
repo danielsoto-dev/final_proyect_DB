@@ -49,9 +49,17 @@ export default function Main() {
   const [student, setStudent] = useState({});
   const [id, setId] = useState('');
   const [id2, setId2] = useState('');
+  const resetHour = () => {
+    let iterable = Object.entries(generalData.hourArray);
+    iterable.forEach((element) => {
+      element[1].isBlocked = false;
+    });
+  };
+
   const handleInputChange2 = (event) => {
     setId2(event.target.value);
   };
+
   const handleInputChange = (event) => {
     setId(event.target.value);
   };
@@ -118,6 +126,7 @@ export default function Main() {
               alignContent='center'
             >
               <Schedule
+                reset={resetHour}
                 hours={generalData.hourArray}
                 scheme={scheme}
               ></Schedule>
