@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box } from '@chakra-ui/core';
-export default function ProfesorItem({ nombre, nrc, selected, onClick }) {
+export default function ProfesorItem({ nombre, cod, onClick }) {
+  const [isSelected, setIsSelected] = useState(false);
+  const add = !isSelected;
+  const ele = cod;
   return (
     <Box
       pr='5px'
@@ -8,10 +11,13 @@ export default function ProfesorItem({ nombre, nrc, selected, onClick }) {
       p='10px'
       m='4px'
       cursor='pointer'
-      bgColor={selected ? 'tomato' : 'red.200'}
-      onClick={onClick}
+      bgColor={isSelected ? 'tomato' : 'red.200'}
+      onClick={() => {
+        onClick(ele, add);
+        setIsSelected(!isSelected);
+      }}
     >
-      NRC: {nrc} | nombre: {nombre}
+      cod: {cod} | nombre: {nombre}
     </Box>
   );
 }

@@ -15,6 +15,7 @@ export function createDataSets(generalData) {
       tipo,
       hora,
       dia,
+      codDoc,
     } = generalData[index];
     let idx = composeIndex(hora, dia);
     //Solo si el nrc no ha sido visto
@@ -28,13 +29,13 @@ export function createDataSets(generalData) {
         isBlocked: false,
         tipo,
       });
-      profArray.push({ nrc, nombreProfesor, isBlocked: false });
+      profArray.push({ nrc, nombreProfesor, codDoc, isBlocked: false });
     } else {
       hourArray[nrc].indexes.push(idx);
     }
     //!  esto es para los horarios
   }
-  console.log(listArray);
+  //console.log(listArray);
   let allData = {
     hourArray,
     listArray,

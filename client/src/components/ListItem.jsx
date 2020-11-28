@@ -19,8 +19,7 @@ export default function ListItem({
       padding='3px'
     >
       <Text>
-        NRC: {asignatura.nrc} | {asignatura.nombreAsignatura} |{' '}
-        {asignatura.nombreProfesor}
+        NRC: {asignatura.nrc} | {asignatura.nombreAsignatura}
       </Text>
     </Box>
   );

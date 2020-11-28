@@ -24,11 +24,11 @@ function blockNRCbyId(hours_list, tag) {
     const tags = list[i][1].indexes;
     if (tags.indexOf(tag) !== -1) {
       list[i][1].isBlocked = true;
-      console.log('I blocked the NRC: ' + list[i][0]);
+      //console.log('I blocked the NRC: ' + list[i][0]);
       blockedSet.add(list[i][0]);
     }
   }
-  console.log('Set is my', [...blockedSet]);
+  //console.log('Set is my', [...blockedSet]);
   return [...blockedSet];
 }
 
@@ -37,13 +37,15 @@ function unblockNRCbyId(hours, hourFilters) {
   let unBlockedSet = new Set();
   for (let i = 0; i < list.length; i++) {
     const tags = list[i][1].indexes;
-    console.log(tags, hourFilters);
+    //console.log(tags, hourFilters);
     if (tags.some((tag) => hourFilters.includes(tag))) continue;
-    console.log('I Unblocked the NRC: ' + list[i][0]);
+    //console.log('I Unblocked the NRC: ' + list[i][0]);
     unBlockedSet.add(list[i][0]);
+
     list[i][1].isBlocked = false;
   }
-  console.log(JSON.parse(JSON.stringify(hours)));
+  //console.log(JSON.parse(JSON.stringify(hours)));
+  console.log('unBlockedSet', unBlockedSet);
   return [...unBlockedSet];
 }
 
@@ -74,11 +76,13 @@ export default function TableBody({ scheme, hours, reset }) {
       //Sino, se agrega
       setHourFilters([...hourFilters, idx]);
       let blockList = blockNRCbyId(hours, idx);
-      console.log('BLockedNRC', blockList);
+      //console.log('BLockedNRC', blockList);
+      let newBlocks = [];
       blockList.forEach((nrc_E) => {
         if (blockedNRC.indexOf(nrc_E) === -1) {
-          setblockedNRC([...blockedNRC, nrc_E]);
+          newBlocks.push(nrc_E);
         }
+        setblockedNRC([...new Set([...blockedNRC, ...newBlocks])]);
       });
       //Ahora, buscamos que NRC, tiene el tag bloqueado y seleccionamos a ese grupo como bloqueado
     }

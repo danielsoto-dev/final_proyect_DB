@@ -25,7 +25,7 @@ personaCrtll.getEstudianteById = async (req, res) => {
     console.log('Error', e);
   }
 };
-let queryByIdProyectadas = `SELECT asignatura.materia,asignatura.cursos AS nrc, asignatura.nombre AS nombreAsignatura, asignatura.Estatus AS tipo, hora.dia, hora.hora, docente.nombre AS nombreProfesor
+let queryByIdProyectadas = `SELECT asignatura.materia,asignatura.cursos AS nrc, asignatura.nombre AS nombreAsignatura, asignatura.Estatus AS tipo, hora.dia, hora.hora, docente.nombre AS nombreProfesor, docente.codigo AS codDoc
 FROM estudiante 
 INNER JOIN plan_estudio
 		ON estudiante.id_plan_estudio = plan_estudio.id
@@ -41,7 +41,8 @@ INNER JOIN plan_estudio
 		ON hora.nrc_curso = dicta.nrc_curso
 	INNER JOIN docente
 		ON dicta.codigo_profesor = docente.codigo		
-	WHERE estudiante.codigo = ?`;
+  WHERE estudiante.codigo = ?
+  LIMIT 15`;
 
 personaCrtll.getProyectadasById = async (req, res) => {
   const id = req.params.id;

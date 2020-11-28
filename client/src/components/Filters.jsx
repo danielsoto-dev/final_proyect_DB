@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import EffectModal from './EffectModal';
 import { useHourFilters } from '../contexts/HourFilters';
 import { Button, Flex } from '@chakra-ui/core';
 import { BsFilter, BsTrash, BsPlus } from 'react-icons/bs';
+import { useBlockedNRC } from '../contexts/BlockedNRC';
 import ProfesorItem from './ProfesorItem';
 import deleteValue from '../utilities/deleteValue';
 
@@ -10,6 +11,21 @@ export default function Filters({ items }) {
   const [isModalOpen, setisModalOpen] = useState(false);
   const [selectedProf, setSelectedProf] = useState([]);
   const { setHourFilters } = useHourFilters();
+  const displayedProf = new Set();
+  const { blockedNRC, setblockedNRC } = useBlockedNRC();
+  useEffect(() => {
+    let posibleNRCBlocks = [];
+    items.forEach((item) => {
+      if (selectedProf.includes(item.codDoc)) {
+        if (blockedNRC.indexOf(item.nrc + '') === -1) {
+          posibleNRCBlocks.push(item.nrc + '');
+        }
+      }
+    });
+    setblockedNRC([...new Set([...blockedNRC, ...posibleNRCBlocks])]);
+  }, [selectedProf]);
+
+  console.log([...blockedNRC]);
   const clickHandler = (ele, add = true) => {
     if (add) {
       setSelectedProf([...selectedProf, ele]);
@@ -20,6 +36,7 @@ export default function Filters({ items }) {
       setSelectedProf([...newArray]);
     }
   };
+
   return (
     <Flex
       mt='20px'
@@ -43,13 +60,16 @@ export default function Filters({ items }) {
         onEffect={() => alert('Aquí envio la actualización de blockNRc 🤑')}
       >
         {items.map((item) => {
+          if (displayedProf.has(item.codDoc)) {
+            return null;
+          }
+          displayedProf.add(item.codDoc);
           return (
             <ProfesorItem
-              key={item.nrc}
-              nrc={item.nrc}
+              key={item.codDoc}
               nombre={item.nombreProfesor}
+              cod={item.codDoc}
               onClick={clickHandler}
-              isSelected
             ></ProfesorItem>
           );
         })}
