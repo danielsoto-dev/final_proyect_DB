@@ -27,20 +27,20 @@ personaCrtll.getEstudianteById = async (req, res) => {
 };
 let queryByIdProyectadas = `SELECT asignatura.materia,asignatura.cursos AS nrc, asignatura.nombre AS nombreAsignatura, asignatura.Estatus AS tipo, hora.dia, hora.hora, docente.nombre AS nombreProfesor
 FROM estudiante 
-	INNER JOIN plan_estudio
+INNER JOIN plan_estudio
 		ON estudiante.id_plan_estudio = plan_estudio.id
 	INNER JOIN contiene
 		ON plan_estudio.id = contiene.id_plan_estudio
 	INNER JOIN asignatura
 		ON contiene.id_asignatura = asignatura.codigo
 	INNER JOIN curso
-		ON asignatura.cursos = curso.NRC	
+		ON asignatura.codigo = curso.id_asignatura	
 	INNER JOIN hora
 		ON curso.NRC = hora.nrc_curso
 	INNER JOIN dicta
 		ON hora.nrc_curso = dicta.nrc_curso
 	INNER JOIN docente
-		ON dicta.codigo_profesor = docente.codigo				
+		ON dicta.codigo_profesor = docente.codigo		
 	WHERE estudiante.codigo = ?`;
 
 personaCrtll.getProyectadasById = async (req, res) => {

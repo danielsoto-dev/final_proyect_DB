@@ -51,7 +51,13 @@ export default function TableBody({ scheme, hours, reset }) {
   const { hourFilters, setHourFilters } = useHourFilters();
   const { blockedNRC, setblockedNRC } = useBlockedNRC();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    //Se eliminó un tag a hourFilter
+    let unBlockList = unblockNRCbyId(hours, hourFilters);
+    unBlockList.forEach((nrc_E) => {
+      setblockedNRC(deleteValue(blockedNRC, (nrc) => nrc === nrc_E));
+    });
+  }, [hourFilters]);
 
   const [dataArray, setDataArray] = useState([]);
   if (Object.entries(hourFilters).length === 0) {
@@ -64,10 +70,6 @@ export default function TableBody({ scheme, hours, reset }) {
       //Si estaba, lo eliminamos
       const newHourFilter = deleteValue(hourFilters, (el_id) => el_id === idx);
       setHourFilters(newHourFilter);
-      let unBlockList = unblockNRCbyId(hours, hourFilters);
-      unBlockList.forEach((nrc_E) => {
-        setblockedNRC(deleteValue(blockedNRC, (nrc) => nrc === nrc_E));
-      });
     } else {
       //Sino, se agrega
       setHourFilters([...hourFilters, idx]);
