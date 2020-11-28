@@ -26,9 +26,6 @@ export default function EffectModal({
           <ModalBody> {children}</ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='blue' mr={3} onClick={onEffect}>
-              Guardar
-            </Button>
             <Button colorScheme='blue' mr={3} onClick={onClose}>
               Cerrar
             </Button>

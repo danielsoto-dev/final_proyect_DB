@@ -3,6 +3,7 @@ import ListItem from './ListItem';
 import deleteValue from '../utilities/deleteValue'; //This is de API fetch
 import { useLectureSelections } from '../contexts/LectureSelections';
 import { useBlockedNRC } from '../contexts/BlockedNRC';
+import { useBlockedNRCProf } from '../contexts/BlockedNRCProf';
 import { BsArrowCounterclockwise } from 'react-icons/bs';
 import { Box, Button, Text, Flex } from '@chakra-ui/core';
 import axios from 'axios';
@@ -11,6 +12,9 @@ export default function List({ items = [] }) {
   const [selected, setSelected] = useState([]);
   const { setLectureSelections } = useLectureSelections();
   const { blockedNRC, setblockedNRC } = useBlockedNRC();
+  const { blockedNRCProf, setblockedNRCProf } = useBlockedNRCProf();
+  const blocked = [...new Set([...blockedNRC, ...blockedNRCProf])];
+
   // ? Puedo guardar solo los NRC a ver
   const handleClick = (NRC) => {
     setblockedNRC([...blockedNRC, NRC]);
@@ -37,7 +41,7 @@ export default function List({ items = [] }) {
       {items.map((item) => {
         //Verifico en la lista de NRC bloqueados si está bloqueado lo pongo en la lista
         //console.log(blockedNRC, item.nrc);
-        if (blockedNRC.indexOf(item.nrc + '') !== -1) {
+        if (blocked.indexOf(item.nrc + '') !== -1) {
           item.isBlocked = true;
         } else {
           item.isBlocked = false;

@@ -8,6 +8,7 @@ import List from './List';
 import LectureSelectionsProvider from '../contexts/LectureSelections';
 import HourFiltersProvider from '../contexts/HourFilters';
 import BlockedNRCProvider from '../contexts/BlockedNRC';
+import BlockedNRCProfProvider from '../contexts/BlockedNRCProf';
 import Filters from './Filters';
 import BasicInput from './BasicInput';
 import { createDataSets } from '../utilities/createDataSets';
@@ -94,69 +95,71 @@ export default function Main() {
     <Flex mt='50px' alignItems='center' justifyContent='center'>
       <HourFiltersProvider>
         <BlockedNRCProvider>
-          <LectureSelectionsProvider>
-            <Wrapper>
-              {!isLogged ? (
-                <BasicInput
-                  labelText='Log-In'
-                  btnText='Ingresar'
-                  inputPlaceHolder='Ingrese su código'
-                  inputOnChange={handleInputChange}
-                  btnOnClick={handleLoginSubmit}
-                  id={id}
-                ></BasicInput>
-              ) : (
-                <>
-                  <Text mb='8px' fontSize='20px'>
-                    ¡Bienvenid@ {student.nombre}! del {student.Semestre}{' '}
-                    semestre.
-                  </Text>
-                  <Button
-                    bg='orange.600'
-                    color='white'
-                    onClick={() => {
-                      setId(id);
-                      setIsLogged(false);
-                    }}
-                  >
-                    Deslogear
-                  </Button>
-                </>
-              )}
-              <Flex
-                w='1400px'
-                justifyContent='space-around'
-                alignContent='center'
-              >
-                <Schedule
-                  reset={resetHour}
-                  hours={generalData.hourArray}
-                  scheme={scheme}
-                ></Schedule>
-                <Flex flexDir='column'>
-                  <TeachersFiltersProvider>
-                    <List items={generalData.listArray}></List>
-                    <Filters items={generalData.profArray}></Filters>
-                  </TeachersFiltersProvider>
+          <BlockedNRCProfProvider>
+            <LectureSelectionsProvider>
+              <Wrapper>
+                {!isLogged ? (
+                  <BasicInput
+                    labelText='Log-In'
+                    btnText='Ingresar'
+                    inputPlaceHolder='Ingrese su código'
+                    inputOnChange={handleInputChange}
+                    btnOnClick={handleLoginSubmit}
+                    id={id}
+                  ></BasicInput>
+                ) : (
+                  <>
+                    <Text mb='8px' fontSize='20px'>
+                      ¡Bienvenid@ {student.nombre}! del {student.Semestre}{' '}
+                      semestre.
+                    </Text>
+                    <Button
+                      bg='orange.600'
+                      color='white'
+                      onClick={() => {
+                        setId(id);
+                        setIsLogged(false);
+                      }}
+                    >
+                      Deslogear
+                    </Button>
+                  </>
+                )}
+                <Flex
+                  w='1400px'
+                  justifyContent='space-around'
+                  alignContent='center'
+                >
+                  <Schedule
+                    reset={resetHour}
+                    hours={generalData.hourArray}
+                    scheme={scheme}
+                  ></Schedule>
+                  <Flex flexDir='column'>
+                    <TeachersFiltersProvider>
+                      <List items={generalData.listArray}></List>
+                      <Filters items={generalData.profArray}></Filters>
+                    </TeachersFiltersProvider>
+                  </Flex>
                 </Flex>
-              </Flex>
 
-              <Box mb='20px'>
-                <BasicInput
-                  labelText='Buscar Horarios guardados'
-                  btnText='Ingresar'
-                  inputPlaceHolder='Ingrese su código'
-                  inputOnChange={handleInputChange2}
-                  btnOnClick={handleLoginSubmitCompare}
-                  id={id2}
-                ></BasicInput>
+                <Box mb='20px'>
+                  <BasicInput
+                    labelText='Buscar Horarios guardados'
+                    btnText='Ingresar'
+                    inputPlaceHolder='Ingrese su código'
+                    inputOnChange={handleInputChange2}
+                    btnOnClick={handleLoginSubmitCompare}
+                    id={id2}
+                  ></BasicInput>
 
-                <Box ml='45px'>
-                  <ScheduleRead scheme={scheme}></ScheduleRead>
+                  <Box ml='45px'>
+                    <ScheduleRead scheme={scheme}></ScheduleRead>
+                  </Box>
                 </Box>
-              </Box>
-            </Wrapper>
-          </LectureSelectionsProvider>
+              </Wrapper>
+            </LectureSelectionsProvider>
+          </BlockedNRCProfProvider>
         </BlockedNRCProvider>
       </HourFiltersProvider>
     </Flex>

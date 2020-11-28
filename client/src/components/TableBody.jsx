@@ -28,7 +28,7 @@ function blockNRCbyId(hours_list, tag) {
       blockedSet.add(list[i][0]);
     }
   }
-  //console.log('Set is my', [...blockedSet]);
+  console.log('Se bloquearán: ', [...blockedSet]);
   return [...blockedSet];
 }
 
@@ -45,7 +45,7 @@ function unblockNRCbyId(hours, hourFilters) {
     list[i][1].isBlocked = false;
   }
   //console.log(JSON.parse(JSON.stringify(hours)));
-  console.log('unBlockedSet', unBlockedSet);
+  console.log('Se desbloquearán', unBlockedSet);
   return [...unBlockedSet];
 }
 
@@ -56,9 +56,11 @@ export default function TableBody({ scheme, hours, reset }) {
   useEffect(() => {
     //Se eliminó un tag a hourFilter
     let unBlockList = unblockNRCbyId(hours, hourFilters);
-    unBlockList.forEach((nrc_E) => {
-      setblockedNRC(deleteValue(blockedNRC, (nrc) => nrc === nrc_E));
+    let newBlockedNRC = [...blockedNRC];
+    newBlockedNRC.forEach((nrc_E) => {
+      deleteValue(blockedNRC, (nrc) => nrc === nrc_E);
     });
+    setblockedNRC;
   }, [hourFilters]);
 
   const [dataArray, setDataArray] = useState([]);
@@ -75,15 +77,7 @@ export default function TableBody({ scheme, hours, reset }) {
     } else {
       //Sino, se agrega
       setHourFilters([...hourFilters, idx]);
-      let blockList = blockNRCbyId(hours, idx);
-      //console.log('BLockedNRC', blockList);
-      let newBlocks = [];
-      blockList.forEach((nrc_E) => {
-        if (blockedNRC.indexOf(nrc_E) === -1) {
-          newBlocks.push(nrc_E);
-        }
-        setblockedNRC([...new Set([...blockedNRC, ...newBlocks])]);
-      });
+
       //Ahora, buscamos que NRC, tiene el tag bloqueado y seleccionamos a ese grupo como bloqueado
     }
     //!CREO QUE IS IN HOURS ES REDUNDANTE O NO PORQUE LOS  VACIOS AJA

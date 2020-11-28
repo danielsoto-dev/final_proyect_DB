@@ -3,35 +3,33 @@ import EffectModal from './EffectModal';
 import { useHourFilters } from '../contexts/HourFilters';
 import { Button, Flex } from '@chakra-ui/core';
 import { BsFilter, BsTrash, BsPlus } from 'react-icons/bs';
-import { useBlockedNRC } from '../contexts/BlockedNRC';
+import { useBlockedNRCProf } from '../contexts/BlockedNRCProf';
 import ProfesorItem from './ProfesorItem';
 import deleteValue from '../utilities/deleteValue';
 
 export default function Filters({ items }) {
+  //! Agregar conexión con el limpiar filtros
   const [isModalOpen, setisModalOpen] = useState(false);
   const [selectedProf, setSelectedProf] = useState([]);
   const { setHourFilters } = useHourFilters();
   const displayedProf = new Set();
-  const { blockedNRC, setblockedNRC } = useBlockedNRC();
+  const { setblockedNRCProf } = useBlockedNRCProf();
   useEffect(() => {
     let posibleNRCBlocks = [];
     items.forEach((item) => {
       if (selectedProf.includes(item.codDoc)) {
-        if (blockedNRC.indexOf(item.nrc + '') === -1) {
-          posibleNRCBlocks.push(item.nrc + '');
-        }
+        posibleNRCBlocks.push(item.nrc + '');
       }
     });
-    setblockedNRC([...new Set([...blockedNRC, ...posibleNRCBlocks])]);
+    setblockedNRCProf(posibleNRCBlocks);
   }, [selectedProf]);
 
-  console.log([...blockedNRC]);
   const clickHandler = (ele, add = true) => {
     if (add) {
       setSelectedProf([...selectedProf, ele]);
     } else {
       const newArray = deleteValue(selectedProf, (el) => {
-        return el.NRC === ele.NRC;
+        return el === ele;
       });
       setSelectedProf([...newArray]);
     }
@@ -64,12 +62,14 @@ export default function Filters({ items }) {
             return null;
           }
           displayedProf.add(item.codDoc);
+          const isSelected = selectedProf.indexOf(item.codDoc) > -1;
           return (
             <ProfesorItem
               key={item.codDoc}
               nombre={item.nombreProfesor}
               cod={item.codDoc}
               onClick={clickHandler}
+              isSelected={isSelected}
             ></ProfesorItem>
           );
         })}
