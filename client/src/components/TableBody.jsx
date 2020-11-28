@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Row from './Row';
 import Cell from './Cell';
 import tableData from '../utilities/tableData';
@@ -19,33 +19,43 @@ function keyInHours(key, hours_list) {
 
 function blockNRCbyId(hours_list, tag) {
   let list = Object.entries(hours_list);
+  let blockedSet = new Set();
   for (let i = 0; i < list.length; i++) {
     const tags = list[i][1].indexes;
     if (tags.indexOf(tag) !== -1) {
       list[i][1].isBlocked = true;
-      break;
+      console.log('I blocked the NRC: ' + list[i][0]);
+      blockedSet.add(list[i][0]);
     }
   }
+  console.log('Set is my', [...blockedSet]);
+  return [...blockedSet];
 }
 
-function unblockNRCbyId(hours, id) {
-  let nrc_buscado = hours[id].nrc;
-  if (nrc_buscado) {
-    let iterable = Object.entries(hours);
-    iterable.forEach((element) => {
-      if (element.isBlocked) return null;
-      if (element[1].nrc === nrc_buscado) {
-        element[1].isBlocked = false;
-      }
-    });
+function unblockNRCbyId(hours, hourFilters) {
+  let list = Object.entries(hours);
+  let unBlockedSet = new Set();
+  for (let i = 0; i < list.length; i++) {
+    const tags = list[i][1].indexes;
+    console.log(tags, hourFilters);
+    if (tags.some((tag) => hourFilters.includes(tag))) continue;
+    console.log('I Unblocked the NRC: ' + list[i][0]);
+    unBlockedSet.add(list[i][0]);
+    list[i][1].isBlocked = false;
   }
+  console.log(JSON.parse(JSON.stringify(hours)));
+  return [...unBlockedSet];
 }
+
 export default function TableBody({ scheme, hours, reset }) {
   const { hourFilters, setHourFilters } = useHourFilters();
   const { blockedNRC, setblockedNRC } = useBlockedNRC();
 
-  const [dataArray, setDataArray] = useState([]);
+  useEffect(() => {
+    effect;
+  }, [hourFilters]);
 
+  const [dataArray, setDataArray] = useState([]);
   if (Object.entries(hourFilters).length === 0) {
     reset();
   }
@@ -56,13 +66,22 @@ export default function TableBody({ scheme, hours, reset }) {
       //Si estaba, lo eliminamos
       const newHourFilter = deleteValue(hourFilters, (el_id) => el_id === idx);
       setHourFilters(newHourFilter);
+      let unBlockList = unblockNRCbyId(hours, hourFilters);
+      unBlockList.forEach((nrc_E) => {
+        setblockedNRC(deleteValue(blockedNRC, (nrc) => nrc === nrc_E));
+      });
     } else {
       //Sino, se agrega
       setHourFilters([...hourFilters, idx]);
-      blockNRCbyId(hours, idx);
+      let blockList = blockNRCbyId(hours, idx);
+      console.log('BLockedNRC', blockList);
+      blockList.forEach((nrc_E) => {
+        if (blockedNRC.indexOf(nrc_E) === -1) {
+          setblockedNRC([...blockedNRC, nrc_E]);
+        }
+      });
       //Ahora, buscamos que NRC, tiene el tag bloqueado y seleccionamos a ese grupo como bloqueado
     }
-
     //!CREO QUE IS IN HOURS ES REDUNDANTE O NO PORQUE LOS  VACIOS AJA
   }
   return (
@@ -82,13 +101,13 @@ export default function TableBody({ scheme, hours, reset }) {
               }
               // ? Generamos la key/tag/idx
               const key = `${idx}-${idx2}`;
-              let value = null;
+              let value = key;
               if (Object.keys(hours).length !== 0) {
                 //key in hours && !hours[key].isBlocked
                 let nrc = keyInHours(key, hours);
-                console.log('nrc', nrc);
+                //nrc && !nrc.isBlocked
                 if (nrc && !nrc.isBlocked) {
-                  value = nrc.materia + nrc.nrc;
+                  value = nrc.nrc + nrc.isBlocked;
                 }
               }
               //? Esto ^ ^ se irá cuando ya haya datos de verdad
