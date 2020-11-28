@@ -12,17 +12,9 @@ export default function List({ items = [] }) {
   const { setLectureSelections } = useLectureSelections();
   const { blockedNRC, setblockedNRC } = useBlockedNRC();
   // ? Puedo guardar solo los NRC a ver
-  const clickHandler = (ele, add = true) => {
-    if (add) {
-      setSelected([...selected, ele]);
-    } else {
-      const newArray = deleteValue(selected, (el) => {
-        return el.NRC === ele.NRC;
-      });
-      setSelected([...newArray]);
-    }
+  const handleClick = (NRC) => {
+    setblockedNRC([...blockedNRC, NRC]);
   };
-  console.log(items);
   //! CHANGE THIS TO FETCH THE LECTURES in Effect
   const fetchLectures = () => {
     let selectedNRC = [];
@@ -52,7 +44,6 @@ export default function List({ items = [] }) {
           <ListItem
             key={item.nrc}
             asignatura={item}
-            clickHandler={clickHandler}
             isDisable={item.isBlocked ? true : false}
           ></ListItem>
         );

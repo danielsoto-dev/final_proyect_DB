@@ -15,18 +15,22 @@ export function createDataSets(generalData) {
       hora,
       dia,
     } = generalData[index];
+    //Solo si el nrc no ha sido visto
     let idx = composeIndex(hora, dia);
-    hourArray[idx] = { materia, nrc, isBlocked: false };
-    if (nrcSet.has(nrc)) continue;
-    nrcSet.add(nrc);
-    listArray.push({
-      nrc,
-      nombreAsignatura,
-      nombreProfesor,
-      isBlocked: false,
-      tipo,
-    });
-    profArray.push({ nrc, nombreProfesor, isBlocked: false });
+    if (!nrcSet.has(nrc)) {
+      nrcSet.add(nrc);
+      hourArray[nrc] = { materia, indexes: [idx], isBlocked: false };
+      listArray.push({
+        nrc,
+        nombreAsignatura,
+        nombreProfesor,
+        isBlocked: false,
+        tipo,
+      });
+      profArray.push({ nrc, nombreProfesor, isBlocked: false });
+    } else {
+      hourArray[nrc].indexes.push(idx);
+    }
     //!  esto es para los horarios
   }
   console.log(listArray);

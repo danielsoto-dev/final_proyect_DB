@@ -5,15 +5,26 @@ import tableData from '../utilities/tableData';
 import deleteValue from '../utilities/deleteValue';
 import { useHourFilters } from '../contexts/HourFilters';
 import { useBlockedNRC } from '../contexts/BlockedNRC';
-function blockNRCbyId(hours, id) {
-  let nrc_buscado = hours[id].nrc;
-  if (nrc_buscado) {
-    let iterable = Object.entries(hours);
-    iterable.forEach((element) => {
-      if (element[1].nrc === nrc_buscado) {
-        element[1].isBlocked = true;
-      }
-    });
+
+function keyInHours(key, hours_list) {
+  let list = Object.entries(hours_list);
+  for (let i = 0; i < list.length; i++) {
+    const tags = list[i][1].indexes;
+    if (tags.indexOf(key) !== -1) {
+      return { ...list[i][1], nrc: list[i][0] };
+    }
+  }
+  return null;
+}
+
+function blockNRCbyId(hours_list, tag) {
+  let list = Object.entries(hours_list);
+  for (let i = 0; i < list.length; i++) {
+    const tags = list[i][1].indexes;
+    if (tags.indexOf(tag) !== -1) {
+      list[i][1].isBlocked = true;
+      break;
+    }
   }
 }
 
@@ -22,6 +33,7 @@ function unblockNRCbyId(hours, id) {
   if (nrc_buscado) {
     let iterable = Object.entries(hours);
     iterable.forEach((element) => {
+      if (element.isBlocked) return null;
       if (element[1].nrc === nrc_buscado) {
         element[1].isBlocked = false;
       }
@@ -31,32 +43,27 @@ function unblockNRCbyId(hours, id) {
 export default function TableBody({ scheme, hours, reset }) {
   const { hourFilters, setHourFilters } = useHourFilters();
   const { blockedNRC, setblockedNRC } = useBlockedNRC();
-  console.log('blockedNRC', blockedNRC);
+
   const [dataArray, setDataArray] = useState([]);
 
   if (Object.entries(hourFilters).length === 0) {
     reset();
   }
-  function handleClick(id) {
-    let isInHours = id in hours;
-    if (hourFilters.includes(id)) {
-      const newState = deleteValue(hourFilters, (el_id) => el_id === id);
-      if (isInHours) {
-        const newBlocked = deleteValue(
-          blockedNRC,
-          (el) => el === hours[id].nrc
-        );
-        unblockNRCbyId(hours, id);
-        setblockedNRC([...newBlocked]);
-      }
-      setHourFilters(newState);
+  // ? Logica cuando se hace click
+  function handleClick(idx) {
+    // Preguntamos si ya estaba ese valor
+    if (hourFilters.includes(idx)) {
+      //Si estaba, lo eliminamos
+      const newHourFilter = deleteValue(hourFilters, (el_id) => el_id === idx);
+      setHourFilters(newHourFilter);
     } else {
-      if (isInHours) {
-        blockNRCbyId(hours, id);
-        setblockedNRC([...blockedNRC, hours[id].nrc]);
-      }
-      setHourFilters([...hourFilters, id]);
+      //Sino, se agrega
+      setHourFilters([...hourFilters, idx]);
+      blockNRCbyId(hours, idx);
+      //Ahora, buscamos que NRC, tiene el tag bloqueado y seleccionamos a ese grupo como bloqueado
     }
+
+    //!CREO QUE IS IN HOURS ES REDUNDANTE O NO PORQUE LOS  VACIOS AJA
   }
   return (
     <tbody>
@@ -73,12 +80,16 @@ export default function TableBody({ scheme, hours, reset }) {
                   </Cell>
                 );
               }
-              // ? Arreglar esto cuando haga el fetch real
-              // ? Arreglar esto cuando haga el fetch real
+              // ? Generamos la key/tag/idx
               const key = `${idx}-${idx2}`;
-              let value;
-              if (key in hours && !hours[key].isBlocked) {
-                value = hours[key].materia + hours[key].nrc;
+              let value = null;
+              if (Object.keys(hours).length !== 0) {
+                //key in hours && !hours[key].isBlocked
+                let nrc = keyInHours(key, hours);
+                console.log('nrc', nrc);
+                if (nrc && !nrc.isBlocked) {
+                  value = nrc.materia + nrc.nrc;
+                }
               }
               //? Esto ^ ^ se irá cuando ya haya datos de verdad
               return (
@@ -87,6 +98,7 @@ export default function TableBody({ scheme, hours, reset }) {
                   id={key}
                   handleClick={() => handleClick(key)}
                   key={key}
+                  // esto determina si se pone rojo o no
                   selected={hourFilters.includes(key) ? true : false}
                   //selected={hours[key] && hours[key].isBlocked ? true : false}
                 >
