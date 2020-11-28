@@ -1,19 +1,6 @@
 import React from 'react';
 import { Box } from '@chakra-ui/core';
-export default function ProfesorItem({ nombre, nrc, isSelected, onClick }) {
-    if (!isSelected) {
-        clickHandler({
-          NRC: asignatura.nrc,
-          codAsig: asignatura.nombreAsignatura,
-        });
-      } else {
-        clickHandler(
-          {
-            NRC: asignatura.nrc,
-            codAsig: asignatura.nombreAsignatura,
-          },
-          false
-        );
+export default function ProfesorItem({ nombre, nrc, selected, onClick }) {
   return (
     <Box
       pr='5px'
