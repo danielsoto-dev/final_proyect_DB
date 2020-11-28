@@ -17,36 +17,21 @@ function keyInHours(key, hours_list) {
   return null;
 }
 
-function blockNRCbyId(hours_list, tag) {
+function blockNRCByFilter(hours_list, filter) {
   let list = Object.entries(hours_list);
-  let blockedSet = new Set();
+  let blockedNRC_list = [];
   for (let i = 0; i < list.length; i++) {
+    //tags son los indices del NRC
     const tags = list[i][1].indexes;
-    if (tags.indexOf(tag) !== -1) {
+    // Ver si se puede cambiar el orden de esto
+    if (tags.some((tag) => filter.includes(tag))) {
       list[i][1].isBlocked = true;
-      //console.log('I blocked the NRC: ' + list[i][0]);
-      blockedSet.add(list[i][0]);
+      blockedNRC_list.push(list[i][0]);
+    } else {
+      list[i][1].isBlocked = false;
     }
   }
-  console.log('Se bloquearán: ', [...blockedSet]);
-  return [...blockedSet];
-}
-
-function unblockNRCbyId(hours, hourFilters) {
-  let list = Object.entries(hours);
-  let unBlockedSet = new Set();
-  for (let i = 0; i < list.length; i++) {
-    const tags = list[i][1].indexes;
-    //console.log(tags, hourFilters);
-    if (tags.some((tag) => hourFilters.includes(tag))) continue;
-    //console.log('I Unblocked the NRC: ' + list[i][0]);
-    unBlockedSet.add(list[i][0]);
-
-    list[i][1].isBlocked = false;
-  }
-  //console.log(JSON.parse(JSON.stringify(hours)));
-  console.log('Se desbloquearán', unBlockedSet);
-  return [...unBlockedSet];
+  return blockedNRC_list;
 }
 
 export default function TableBody({ scheme, hours, reset }) {
@@ -55,15 +40,11 @@ export default function TableBody({ scheme, hours, reset }) {
 
   useEffect(() => {
     //Se eliminó un tag a hourFilter
-    let unBlockList = unblockNRCbyId(hours, hourFilters);
-    let newBlockedNRC = [...blockedNRC];
-    newBlockedNRC.forEach((nrc_E) => {
-      deleteValue(blockedNRC, (nrc) => nrc === nrc_E);
-    });
-    setblockedNRC;
+    let blocked = blockNRCByFilter(hours, hourFilters);
+    console.log('blocked', blocked);
+    setblockedNRC(blocked);
   }, [hourFilters]);
 
-  const [dataArray, setDataArray] = useState([]);
   if (Object.entries(hourFilters).length === 0) {
     reset();
   }
@@ -76,9 +57,7 @@ export default function TableBody({ scheme, hours, reset }) {
       setHourFilters(newHourFilter);
     } else {
       //Sino, se agrega
-      setHourFilters([...hourFilters, idx]);
-
-      //Ahora, buscamos que NRC, tiene el tag bloqueado y seleccionamos a ese grupo como bloqueado
+      setHourFilters([...hourFilters, idx]); //Ahora, buscamos que NRC, tiene el tag bloqueado y seleccionamos a ese grupo como bloqueado
     }
     //!CREO QUE IS IN HOURS ES REDUNDANTE O NO PORQUE LOS  VACIOS AJA
   }
@@ -105,7 +84,7 @@ export default function TableBody({ scheme, hours, reset }) {
                 let nrc = keyInHours(key, hours);
                 //nrc && !nrc.isBlocked
                 if (nrc && !nrc.isBlocked) {
-                  value = nrc.nrc + nrc.isBlocked;
+                  value = nrc.nrc + ' ' + nrc.materia;
                 }
               }
               //? Esto ^ ^ se irá cuando ya haya datos de verdad
