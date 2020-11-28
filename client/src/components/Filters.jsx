@@ -2,11 +2,24 @@ import React, { useState } from 'react';
 import EffectModal from './EffectModal';
 import { useHourFilters } from '../contexts/HourFilters';
 import { Button, Flex } from '@chakra-ui/core';
-import { BsFilter, BsTrash } from 'react-icons/bs';
+import { BsFilter, BsTrash, BsPlus } from 'react-icons/bs';
+import ProfesorItem from './ProfesorItem';
+import deleteValue from '../utilities/deleteValue';
 
-export default function Filters() {
+export default function Filters({ items }) {
   const [isModalOpen, setisModalOpen] = useState(false);
+  const [selectedProf, setSelectedProf] = useState([]);
   const { setHourFilters } = useHourFilters();
+  const clickHandler = (ele, add = true) => {
+    if (add) {
+      setSelectedProf([...selectedProf, ele]);
+    } else {
+      const newArray = deleteValue(selectedProf, (el) => {
+        return el.NRC === ele.NRC;
+      });
+      setSelectedProf([...newArray]);
+    }
+  };
   return (
     <Flex
       mt='20px'
@@ -27,9 +40,19 @@ export default function Filters() {
         effectTitle='Seleccione a sus profesores'
         isOpen={isModalOpen}
         onClose={() => setisModalOpen(false)}
-        onEffect={() => alert('We gucci 🤑')}
+        onEffect={() => alert('Aquí envio la actualización de blockNRc 🤑')}
       >
-        Aquí Filtro a los profes
+        {items.map((item) => {
+          return (
+            <ProfesorItem
+              key={item.nrc}
+              nrc={item.nrc}
+              nombre={item.nombreProfesor}
+              onClick={clickHandler}
+              isSelected
+            ></ProfesorItem>
+          );
+        })}
       </EffectModal>
       <Button
         onClick={() => setHourFilters([])}
@@ -41,7 +64,7 @@ export default function Filters() {
       </Button>
       <Button
         onClick={() => null}
-        leftIcon={<BsTrash />}
+        leftIcon={<BsPlus />}
         bg='orange.600'
         color='white'
       >

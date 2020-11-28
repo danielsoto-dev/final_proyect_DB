@@ -136,7 +136,7 @@ export default function Main() {
                 <Flex flexDir='column'>
                   <TeachersFiltersProvider>
                     <List items={generalData.listArray}></List>
-                    <Filters></Filters>
+                    <Filters items={generalData.profArray}></Filters>
                   </TeachersFiltersProvider>
                 </Flex>
               </Flex>

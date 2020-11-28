@@ -10,6 +10,7 @@ export default function ListItem({
   const clickFun = () => {
     // ? This logic needs to change when fetching real data
     if (!isSelected) {
+      //! Estos llamados a clickHandler no hacen nada O.o
       clickHandler({
         NRC: asignatura.nrc,
         codAsig: asignatura.nombreAsignatura,

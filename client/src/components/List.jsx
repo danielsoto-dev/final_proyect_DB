@@ -31,6 +31,8 @@ export default function List({ items = [] }) {
         selectedNRC.push(item.nrc);
       }
     });
+    //selectedNRC se envia a Schedule para que proyecte las seleccionadas
+    console.log('selectedNRC', selectedNRC);
   };
   return (
     <Flex direction='column'>
@@ -40,6 +42,7 @@ export default function List({ items = [] }) {
         </Text>
       </Box>
       {items.map((item) => {
+        //Verifico en la lista de NRC bloqueados si está bloqueado lo pongo en la lista
         if (blockedNRC.indexOf(item.nrc) !== -1) {
           item.isBlocked = true;
         } else {

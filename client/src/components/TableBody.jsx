@@ -31,7 +31,9 @@ function unblockNRCbyId(hours, id) {
 export default function TableBody({ scheme, hours, reset }) {
   const { hourFilters, setHourFilters } = useHourFilters();
   const { blockedNRC, setblockedNRC } = useBlockedNRC();
+  console.log('blockedNRC', blockedNRC);
   const [dataArray, setDataArray] = useState([]);
+
   if (Object.entries(hourFilters).length === 0) {
     reset();
   }
@@ -49,8 +51,6 @@ export default function TableBody({ scheme, hours, reset }) {
       }
       setHourFilters(newState);
     } else {
-      //! CUIDADO CON ESTE LLAMADO
-
       if (isInHours) {
         blockNRCbyId(hours, id);
         setblockedNRC([...blockedNRC, hours[id].nrc]);
