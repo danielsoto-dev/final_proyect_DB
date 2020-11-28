@@ -14,7 +14,7 @@ export default function ListItem({
       cursor={isDisable ? 'not-allowed' : 'pointer'}
       userSelect='none'
       onClick={() => setIsSelected(!isSelected)}
-      bg={isDisable ? 'gray.200' : color}
+      bg={isDisable ? 'gray.500' : color}
       m='2px'
       padding='3px'
     >

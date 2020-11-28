@@ -51,9 +51,7 @@ export default function TableBody({ scheme, hours, reset }) {
   const { hourFilters, setHourFilters } = useHourFilters();
   const { blockedNRC, setblockedNRC } = useBlockedNRC();
 
-  useEffect(() => {
-    effect;
-  }, [hourFilters]);
+  useEffect(() => {}, []);
 
   const [dataArray, setDataArray] = useState([]);
   if (Object.entries(hourFilters).length === 0) {

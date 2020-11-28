@@ -26,6 +26,7 @@ export default function List({ items = [] }) {
     //selectedNRC se envia a Schedule para que proyecte las seleccionadas
     console.log('selectedNRC', selectedNRC);
   };
+  console.log('Soy LIST', blockedNRC);
   return (
     <Flex direction='column'>
       <Box bgColor='blue.300' p='4px'>
@@ -35,7 +36,8 @@ export default function List({ items = [] }) {
       </Box>
       {items.map((item) => {
         //Verifico en la lista de NRC bloqueados si está bloqueado lo pongo en la lista
-        if (blockedNRC.indexOf(item.nrc) !== -1) {
+        console.log(blockedNRC, item.nrc);
+        if (blockedNRC.indexOf(item.nrc + '') !== -1) {
           item.isBlocked = true;
         } else {
           item.isBlocked = false;
@@ -44,7 +46,7 @@ export default function List({ items = [] }) {
           <ListItem
             key={item.nrc}
             asignatura={item}
-            isDisable={item.isBlocked ? true : false}
+            isDisable={item.isBlocked}
           ></ListItem>
         );
       })}
