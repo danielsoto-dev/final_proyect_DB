@@ -1,7 +1,6 @@
 import { composeIndex } from './translators';
 
 export function createDataSets(generalData) {
-  console.log(generalData);
   let hourArray = {};
   let listArray = [];
   let profArray = [];
@@ -17,12 +16,15 @@ export function createDataSets(generalData) {
       dia,
       codDoc,
     } = generalData[index];
+    materia = materia.toUpperCase();
+    nrc = nrc + '';
     let idx = composeIndex(hora, dia);
     //Solo si el nrc no ha sido visto
     if (!nrcSet.has(nrc)) {
       nrcSet.add(nrc);
       hourArray[nrc] = { materia, indexes: [idx], isBlocked: false };
       listArray.push({
+        materia,
         nrc,
         nombreAsignatura,
         nombreProfesor,
@@ -42,7 +44,6 @@ export function createDataSets(generalData) {
     profArray,
   };
   window.myData = allData;
-  console.log('allData', allData);
 
   return allData;
 }

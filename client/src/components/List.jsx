@@ -6,31 +6,60 @@ import { useBlockedNRC } from '../contexts/BlockedNRC';
 import { useBlockedNRCProf } from '../contexts/BlockedNRCProf';
 import { BsArrowCounterclockwise } from 'react-icons/bs';
 import { Box, Button, Text, Flex } from '@chakra-ui/core';
-import axios from 'axios';
+
+function createNRCDict(items) {
+  let dict = {};
+  items.forEach((item) => {
+    if (!item.isBlocked) {
+      if (!dict.hasOwnProperty(item.materia)) {
+        dict[item.materia] = 1;
+      } else {
+        dict[item.materia] += 1;
+      }
+    } else {
+      if (!dict.hasOwnProperty(item.materia)) {
+        dict[item.materia] = 0;
+      }
+    }
+  });
+  return dict;
+}
 
 export default function List({ items = [] }) {
   const [selected, setSelected] = useState([]);
-  const { setLectureSelections } = useLectureSelections();
+  const [nrcDic, setNrcDic] = useState({});
+  const { setLectureSelections } = useLectureSelections(); //! Usar este
   const { blockedNRC, setblockedNRC } = useBlockedNRC();
-  const { blockedNRCProf, setblockedNRCProf } = useBlockedNRCProf();
+  const { blockedNRCProf } = useBlockedNRCProf();
   const blocked = [...new Set([...blockedNRC, ...blockedNRCProf])];
+  useEffect(() => {
+    console.log('cambio items');
+    setNrcDic(createNRCDict(items));
+  }, [items, blockedNRC, blockedNRCProf]);
 
   // ? Puedo guardar solo los NRC a ver
-  const handleClick = (NRC) => {
-    setblockedNRC([...blockedNRC, NRC]);
+  const clickHandler = (ele, add = true) => {
+    if (add) {
+      setSelected([...selected, ele]);
+    } else {
+      const newArray = deleteValue(selected, (el) => {
+        return el === ele;
+      });
+      setSelected([...newArray]);
+    }
   };
   //! CHANGE THIS TO FETCH THE LECTURES in Effect
-  const fetchLectures = () => {
+  const setLectures = () => {
     let selectedNRC = [];
     items.forEach((item) => {
-      if (!item.isBlocked) {
+      //Agrego las seleccionadas que no estén bloqueadas
+      if (!item.isBlocked && selected.indexOf(item.nrc) !== -1) {
         selectedNRC.push(item.nrc);
       }
     });
-    //selectedNRC se envia a Schedule para que proyecte las seleccionadas
-    //console.log('selectedNRC', selectedNRC);
+    //! Solo mando lo que necesito, perfect para tirar la query console.log('selectedNRC', selectedNRC);
+    setLectureSelections(selectedNRC);
   };
-  //console.log('Soy LIST', blockedNRC);
   return (
     <Flex direction='column'>
       <Box bgColor='blue.300' p='4px'>
@@ -38,25 +67,30 @@ export default function List({ items = [] }) {
           Cursos Proyectados
         </Text>
       </Box>
-      {items.map((item) => {
-        //Verifico en la lista de NRC bloqueados si está bloqueado lo pongo en la lista
-        //console.log(blockedNRC, item.nrc);
-        if (blocked.indexOf(item.nrc + '') !== -1) {
-          item.isBlocked = true;
-        } else {
-          item.isBlocked = false;
-        }
-        return (
-          <ListItem
-            key={item.nrc}
-            asignatura={item}
-            isDisable={item.isBlocked}
-          ></ListItem>
-        );
-      })}
-
+      <Box h='200px' overflow='scroll' overflowX='hidden'>
+        {items.map((item) => {
+          let isSelected = false;
+          if (blocked.indexOf(item.nrc) !== -1) {
+            item.isBlocked = true;
+          } else {
+            item.isBlocked = false;
+            if (selected.indexOf(item.nrc) !== -1) {
+              isSelected = true;
+            }
+          }
+          return (
+            <ListItem
+              key={item.nrc}
+              asignatura={item}
+              isDisable={item.isBlocked}
+              onClick={clickHandler}
+              isSelected={isSelected}
+            ></ListItem>
+          );
+        })}
+      </Box>
       <Button
-        onClick={fetchLectures}
+        onClick={setLectures}
         leftIcon={<BsArrowCounterclockwise />}
         bg='orange.600'
         color='white'

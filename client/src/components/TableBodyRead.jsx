@@ -3,6 +3,7 @@ import Row from './Row';
 import Cell from './Cell';
 import tableData from '../utilities/tableData';
 const data = {};
+// We fetch the saved schedules
 export default function TableBody({ scheme }) {
   const [dataArray, setDataArray] = useState(data);
 

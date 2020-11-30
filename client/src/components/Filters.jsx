@@ -3,22 +3,42 @@ import EffectModal from './EffectModal';
 import { useHourFilters } from '../contexts/HourFilters';
 import { Button, Flex } from '@chakra-ui/core';
 import { BsFilter, BsTrash, BsPlus } from 'react-icons/bs';
+import { RiFileExcel2Line } from 'react-icons/ri';
 import { useBlockedNRCProf } from '../contexts/BlockedNRCProf';
 import ProfesorItem from './ProfesorItem';
 import deleteValue from '../utilities/deleteValue';
+import { getTableById, downloadCVS } from '../utilities/TableCVSExporter';
+import { useErrors } from '../contexts/Errors';
+import { useLectureSelections } from '../contexts/LectureSelections';
+import axios from 'axios';
+
+function postNRCHorario(NRC_list, id) {
+  axios
+    .post(`http://localhost:3001/api/estudiantes/horarios/${id}`, {
+      NRC_list,
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+}
 
 export default function Filters({ items }) {
   //! Agregar conexión con el limpiar filtros
+  const { errors, setErrors } = useErrors();
   const [isModalOpen, setisModalOpen] = useState(false);
   const [selectedProf, setSelectedProf] = useState([]);
   const { setHourFilters } = useHourFilters();
   const displayedProf = new Set();
-  const { setblockedNRCProf } = useBlockedNRCProf();
+  const { lectureSelections } = useLectureSelections(); //! Usar este
+  const { blockedNRCProf, setblockedNRCProf } = useBlockedNRCProf();
   useEffect(() => {
     let posibleNRCBlocks = [];
     items.forEach((item) => {
       if (selectedProf.includes(item.codDoc)) {
-        posibleNRCBlocks.push(item.nrc + '');
+        posibleNRCBlocks.push(item.nrc);
       }
     });
     setblockedNRCProf(posibleNRCBlocks);
@@ -41,7 +61,7 @@ export default function Filters({ items }) {
       padding='25px'
       direction='column'
       justify='space-around'
-      h='200px'
+      h='275px'
     >
       <Button
         onClick={() => setisModalOpen(true)}
@@ -75,7 +95,11 @@ export default function Filters({ items }) {
         })}
       </EffectModal>
       <Button
-        onClick={() => setHourFilters([])}
+        onClick={() => {
+          setHourFilters([]);
+          setblockedNRCProf([]);
+          setSelectedProf([]);
+        }}
         leftIcon={<BsTrash />}
         bg='orange.600'
         color='white'
@@ -83,12 +107,22 @@ export default function Filters({ items }) {
         Limpiar Filtros
       </Button>
       <Button
-        onClick={() => null}
+        isDisabled={errors}
+        onClick={() => postNRCHorario(lectureSelections, 3)}
         leftIcon={<BsPlus />}
         bg='orange.600'
         color='white'
       >
         Agregar Horario
+      </Button>
+      <Button
+        isDisabled={errors}
+        onClick={() => downloadCVS(getTableById('mainTable'))}
+        leftIcon={<RiFileExcel2Line />}
+        bg='orange.600'
+        color='white'
+      >
+        Descargar CVS
       </Button>
     </Flex>
   );

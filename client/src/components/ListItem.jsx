@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Box, Text } from '@chakra-ui/core';
 export default function ListItem({
   asignatura,
-  clickHandler,
+  onClick,
   isDisable = false,
+  isSelected = false,
 }) {
-  const [isSelected, setIsSelected] = useState(false);
   const color = isSelected ? 'green.200' : '';
-
+  const add = !isSelected;
+  const ele = asignatura.nrc;
   return (
-    // userSelect='none' ? this is when i want to disable
     <Box
       cursor={isDisable ? 'not-allowed' : 'pointer'}
       userSelect='none'
-      onClick={() => setIsSelected(!isSelected)}
+      onClick={() => {
+        onClick(ele, add);
+      }}
       bg={isDisable ? 'gray.500' : color}
       m='2px'
       padding='3px'

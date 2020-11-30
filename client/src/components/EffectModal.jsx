@@ -13,7 +13,6 @@ export default function EffectModal({
   isOpen,
   onClose,
   effectTitle = 'None',
-  onEffect = () => alert('working'),
   children,
 }) {
   return (

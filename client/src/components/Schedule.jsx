@@ -19,7 +19,7 @@ export default function Schedule({ scheme, hours, reset }) {
   }
   return (
     <>
-      <table height='100%' width='70%'>
+      <table id='mainTable' height='100%' width='70%'>
         <TableHeader headerTitles={headerTitles}></TableHeader>
         <TableBody reset={reset} hours={hours} scheme={scheme}></TableBody>
       </table>
