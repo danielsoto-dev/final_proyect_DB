@@ -140,7 +140,7 @@ export default function TableBody({ scheme, hours = {}, reset }) {
                 <Cell
                   //id es posiblemente inutil
                   id={key}
-                  handleClick={errors ? () => {} : () => handleClick(key)}
+                  handleClick={() => handleClick(key)}
                   key={key}
                   // esto determina si se pone rojo o no
                   selected={hourFilters.includes(key) ? true : false}

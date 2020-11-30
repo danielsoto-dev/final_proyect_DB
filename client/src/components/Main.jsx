@@ -129,7 +129,7 @@ export default function Main() {
               scheme={scheme}
             ></Schedule>
             <Flex flexDir='column'>
-              <List items={generalData.listArray}></List>
+              <List student={student} items={generalData.listArray}></List>
               <Filters items={generalData.profArray}></Filters>
             </Flex>
           </Flex>

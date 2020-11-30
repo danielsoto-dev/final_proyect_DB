@@ -1,6 +1,7 @@
 import { composeIndex } from './translators';
 
 export function createDataSets(generalData) {
+  console.log('generalData', generalData);
   let hourArray = {};
   let listArray = [];
   let profArray = [];
@@ -15,6 +16,7 @@ export function createDataSets(generalData) {
       hora,
       dia,
       codDoc,
+      semestreAsig,
     } = generalData[index];
     materia = materia.toUpperCase();
     nrc = nrc + '';
@@ -29,6 +31,7 @@ export function createDataSets(generalData) {
         nombreAsignatura,
         nombreProfesor,
         isBlocked: false,
+        semestreAsig,
         tipo,
       });
       profArray.push({ nrc, nombreProfesor, codDoc, isBlocked: false });

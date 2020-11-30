@@ -6,11 +6,25 @@ import { useBlockedNRC } from '../contexts/BlockedNRC';
 import { useBlockedNRCProf } from '../contexts/BlockedNRCProf';
 import { BsArrowCounterclockwise } from 'react-icons/bs';
 import { Box, Button, Text, Flex } from '@chakra-ui/core';
+import { useErrors } from '../contexts/Errors';
+import { useToast } from '@chakra-ui/core';
 
-function createNRCDict(items) {
+const matIsRequired = (toast, mat) => {
+  toast({
+    title: 'Bloqueo de asignatura obligatoria',
+    description: `La asignatura: ${mat} es obligatoria, no puede bloquear todos los cursos`,
+    status: 'warning',
+    isClosable: true,
+    position: 'top',
+  });
+};
+
+function createNRCDict(items, errors, setErrors, student, toast) {
   let dict = {};
+  let semestre = student.Semestre;
   items.forEach((item) => {
-    if (!item.isBlocked) {
+    // TODO: Revisar esta
+    if (!item.isBlocked && item.semestreAsig - semestre <= 2) {
       if (!dict.hasOwnProperty(item.materia)) {
         dict[item.materia] = 1;
       } else {
@@ -22,10 +36,31 @@ function createNRCDict(items) {
       }
     }
   });
+  let result = { error: false, mat: null };
+  for (const property in dict) {
+    if (dict[property] === 0) {
+      result.error = true;
+      result.mat = property;
+    }
+
+    console.log(`${property}: ${dict[property]}`);
+  }
+  if (result.error) {
+    setErrors(true);
+    matIsRequired(toast, result.mat);
+  } else {
+    if (!errors) {
+      setErrors(false);
+    }
+  }
+
   return dict;
 }
 
-export default function List({ items = [] }) {
+export default function List({ items = [], student }) {
+  const toast = useToast();
+
+  const { errors, setErrors } = useErrors();
   const [selected, setSelected] = useState([]);
   const [nrcDic, setNrcDic] = useState({});
   const { setLectureSelections } = useLectureSelections(); //! Usar este
@@ -33,8 +68,8 @@ export default function List({ items = [] }) {
   const { blockedNRCProf } = useBlockedNRCProf();
   const blocked = [...new Set([...blockedNRC, ...blockedNRCProf])];
   useEffect(() => {
-    console.log('cambio items');
-    setNrcDic(createNRCDict(items));
+    if (Object.entries(student).length !== 0)
+      setNrcDic(createNRCDict(items, errors, setErrors, student, toast));
   }, [items, blockedNRC, blockedNRCProf]);
 
   // ? Puedo guardar solo los NRC a ver
