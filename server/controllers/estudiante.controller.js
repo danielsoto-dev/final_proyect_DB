@@ -78,7 +78,7 @@ let baseInsert = '';
 personaCrtll.postHorario = async (req, res) => {
   try {
     const { body } = req;
-    console.log('id', body);
+    console.log('Nrcs', body);
     //const result = await db.query(baseInsert, [id);
     res.send(body);
   } catch (e) {

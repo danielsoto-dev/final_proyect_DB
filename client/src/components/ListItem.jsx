@@ -21,7 +21,8 @@ export default function ListItem({
       padding='3px'
     >
       <Text>
-        NRC: {asignatura.nrc} | {asignatura.nombreAsignatura}
+        NRC: {asignatura.nrc} | {asignatura.materia}|
+        {asignatura.nombreAsignatura}
       </Text>
     </Box>
   );

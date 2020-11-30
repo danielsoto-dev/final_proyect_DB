@@ -6,7 +6,7 @@ export function useErrors() {
 }
 
 export default function ErrorsProvider({ children }) {
-  const [errors, setErrors] = useState(false);
+  const [errors, setErrors] = useState({});
 
   return (
     //Si paso un objetos {}, si paso un array []

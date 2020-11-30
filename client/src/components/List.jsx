@@ -46,12 +46,10 @@ function createNRCDict(items, errors, setErrors, student, toast) {
     console.log(`${property}: ${dict[property]}`);
   }
   if (result.error) {
-    setErrors(true);
+    setErrors({ ...errors, list: true });
     matIsRequired(toast, result.mat);
   } else {
-    if (!errors) {
-      setErrors(false);
-    }
+    setErrors({ ...errors, list: false });
   }
 
   return dict;
@@ -63,14 +61,15 @@ export default function List({ items = [], student }) {
   const { errors, setErrors } = useErrors();
   const [selected, setSelected] = useState([]);
   const [nrcDic, setNrcDic] = useState({});
-  const { setLectureSelections } = useLectureSelections(); //! Usar este
+  const { lectureSelections, setLectureSelections } = useLectureSelections(); //! Usar este
   const { blockedNRC, setblockedNRC } = useBlockedNRC();
   const { blockedNRCProf } = useBlockedNRCProf();
   const blocked = [...new Set([...blockedNRC, ...blockedNRCProf])];
   useEffect(() => {
+    console.log('Change');
     if (Object.entries(student).length !== 0)
       setNrcDic(createNRCDict(items, errors, setErrors, student, toast));
-  }, [items, blockedNRC, blockedNRCProf]);
+  }, [items, selected, blockedNRC, blockedNRCProf, lectureSelections]);
 
   // ? Puedo guardar solo los NRC a ver
   const clickHandler = (ele, add = true) => {

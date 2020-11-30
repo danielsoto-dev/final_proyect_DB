@@ -73,7 +73,7 @@ export default function TableBody({ scheme, hours = {}, reset }) {
   const toast = useToast();
   const { hourFilters, setHourFilters } = useHourFilters();
   const { setblockedNRC } = useBlockedNRC();
-  const { lectureSelections } = useLectureSelections(); //! Usar este
+  const { lectureSelections, setLectureSelections } = useLectureSelections(); //! Usar este
 
   useEffect(() => {
     //Agrego los NRC que están bloqueados en los tags de hourFilter
@@ -82,10 +82,11 @@ export default function TableBody({ scheme, hours = {}, reset }) {
     let collisions = collisionChecker(lectureSelections, hours);
     if (collisions.length !== 0) {
       collisionDetected(toast, collisions);
-      setErrors(true);
+      setErrors({ ...errors, table: true });
     } else {
-      setErrors(false);
+      setErrors({ ...errors, table: false });
     }
+    //! Si hay problemas mirar esta lista de dependencias
   }, [lectureSelections, hourFilters]);
 
   if (Object.entries(hourFilters).length === 0) {
@@ -108,7 +109,7 @@ export default function TableBody({ scheme, hours = {}, reset }) {
     <tbody>
       {scheme.map((row, idx) => {
         let color = idx % 2 === 0 ? 'white' : 'gray.300';
-        if (errors) color = 'red.200';
+        if (errors.table) color = 'red.200';
         return (
           <Row bgColor={color} key={idx}>
             {row.map((_, idx2) => {

@@ -34,6 +34,7 @@ export default function Filters({ items }) {
   const displayedProf = new Set();
   const { lectureSelections } = useLectureSelections(); //! Usar este
   const { blockedNRCProf, setblockedNRCProf } = useBlockedNRCProf();
+  let block = errors.table || errors.list ? true : false;
   useEffect(() => {
     let posibleNRCBlocks = [];
     items.forEach((item) => {
@@ -75,7 +76,6 @@ export default function Filters({ items }) {
         effectTitle='Seleccione a sus profesores'
         isOpen={isModalOpen}
         onClose={() => setisModalOpen(false)}
-        onEffect={() => alert('Aquí envio la actualización de blockNRc 🤑')}
       >
         {items.map((item) => {
           if (displayedProf.has(item.codDoc)) {
@@ -107,7 +107,7 @@ export default function Filters({ items }) {
         Limpiar Filtros
       </Button>
       <Button
-        isDisabled={errors}
+        isDisabled={block}
         onClick={() => postNRCHorario(lectureSelections, 3)}
         leftIcon={<BsPlus />}
         bg='orange.600'
@@ -116,7 +116,7 @@ export default function Filters({ items }) {
         Agregar Horario
       </Button>
       <Button
-        isDisabled={errors}
+        isDisabled={block}
         onClick={() => downloadCVS(getTableById('mainTable'))}
         leftIcon={<RiFileExcel2Line />}
         bg='orange.600'
