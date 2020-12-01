@@ -2,11 +2,19 @@ import React, { useState } from 'react';
 import Row from './Row';
 import Cell from './Cell';
 import tableData from '../utilities/tableData';
-const data = {};
-// We fetch the saved schedules
-export default function TableBody({ scheme }) {
-  const [dataArray, setDataArray] = useState(data);
+function keyInHours(key, hours_list = {}) {
+  let list = Object.entries(hours_list);
+  for (let i = 0; i < list.length; i++) {
+    const tags = list[i][1].indexes;
+    if (tags.indexOf(key) !== -1) {
+      return { ...list[i][1], nrc: list[i][0] };
+    }
+  }
+  return null;
+}
 
+// We fetch the saved schedules
+export default function TableBody({ scheme, hours }) {
   return (
     <tbody>
       {scheme.map((row, idx) => {
@@ -22,12 +30,15 @@ export default function TableBody({ scheme }) {
                   </Cell>
                 );
               }
-              // ? Arreglar esto cuando haga el fetch real
+              // ? Generamos la key/tag/idx
               const key = `${idx}-${idx2}`;
+              let value = '';
+              //key in hours && !hours[key].isBlocked
+              let nrc = keyInHours(key, hours);
 
-              let value = key;
-              if (key in dataArray) {
-                value = dataArray[key].name;
+              //nrc && !nrc.isBlocked && lecturesSelections.indexOf(nrc.nrc) !== -1
+              if (nrc) {
+                value = nrc.nrc + ' ' + nrc.materia;
               }
               //? Esto ^ ^ se irá cuando ya haya datos de verdad
               return (

@@ -10,7 +10,7 @@ import ContextWrapper from './ContextWrapper';
 import { createDataSets } from '../utilities/createDataSets';
 import { Box, Flex, Text, Button } from '@chakra-ui/core';
 import { useToast } from '@chakra-ui/core';
-
+import { createHorarioData } from '../utilities/createHorarioData';
 import axios from 'axios';
 
 const invalidInput = (toast) => {
@@ -44,9 +44,13 @@ export default function Main() {
     profArray: [],
   });
   const [isLogged, setIsLogged] = useState(false);
+  const [isLogged2, setIsLogged2] = useState(false);
   const [student, setStudent] = useState({});
+  const [student2, setStudent2] = useState({});
   const [id, setId] = useState('');
   const [id2, setId2] = useState('');
+  const [horarioData, setHorarioData] = useState([]);
+  console.log('horarioData', horarioData);
   const resetHour = () => {
     let iterable = Object.entries(generalData.hourArray);
     iterable.forEach((element) => {
@@ -62,10 +66,6 @@ export default function Main() {
     setId(event.target.value);
   };
   // Fetch ID HORARIOS
-  const handleLoginSubmitCompare = () => {
-    //! aqui DEBE ESTAR EL FETCH PARA los distintos horarios
-    alert('👺');
-  };
   const handleLoginSubmit = async () => {
     let idToQuery = parseInt(id);
     if (!!idToQuery) {
@@ -76,11 +76,32 @@ export default function Main() {
         cantFindData(toast);
       } else {
         let subConsulta = await axios.get(
-          `http://localhost:3001/api/estudiantes/proyectadas/${id}`
+          `http://localhost:3001/api/estudiantes/proyectadas/${idToQuery}`
         );
         setGeneralData(createDataSets(subConsulta.data));
         setStudent(consulta.data[0]);
         setIsLogged(true);
+      }
+    } else {
+      invalidInput(toast);
+    }
+  };
+  const handleLoginSubmitCompare = async () => {
+    let idToQuery = parseInt(id2);
+    if (!!idToQuery) {
+      let consulta = await axios.get(
+        `http://localhost:3001/api/estudiantes/id/${idToQuery}`
+      );
+      if (consulta.data.length === 0) {
+        cantFindData(toast);
+      } else {
+        let subConsulta = await axios.get(
+          `http://localhost:3001/api/estudiantes/horarios/guardados/${idToQuery}`
+        );
+        setHorarioData(createHorarioData(subConsulta.data));
+        console.log('subConsulta.data', subConsulta.data);
+        setStudent2(consulta.data[0]);
+        setIsLogged2(true);
       }
     } else {
       invalidInput(toast);
@@ -130,20 +151,45 @@ export default function Main() {
             ></Schedule>
             <Flex flexDir='column'>
               <List student={student} items={generalData.listArray}></List>
-              <Filters items={generalData.profArray}></Filters>
+              <Filters
+                student={student}
+                items={generalData.profArray}
+              ></Filters>
             </Flex>
           </Flex>
           <Box mb='20px'>
-            <BasicInput
-              labelText='Buscar Horarios guardados'
-              btnText='Ingresar'
-              inputPlaceHolder='Ingrese su código'
-              inputOnChange={handleInputChange2}
-              btnOnClick={handleLoginSubmitCompare}
-              id={id2}
-            ></BasicInput>
-            <Box ml='45px'>
-              <ScheduleRead scheme={scheme}></ScheduleRead>
+            {!isLogged2 ? (
+              <BasicInput
+                labelText='Buscar Horarios guardados'
+                btnText='Ingresar'
+                inputPlaceHolder='Ingrese su código'
+                inputOnChange={handleInputChange2}
+                btnOnClick={handleLoginSubmitCompare}
+                id={id2}
+              ></BasicInput>
+            ) : (
+              <Box mb='20px'>
+                <Text mb='8px' fontSize='20px'>
+                  ¡Bienvenid@ {student2.nombre}! del {student2.Semestre}{' '}
+                  semestre.
+                </Text>
+                <Button
+                  bg='orange.600'
+                  color='white'
+                  onClick={() => {
+                    setId2(id2);
+                    setIsLogged2(false);
+                  }}
+                >
+                  Deslogear
+                </Button>
+              </Box>
+            )}
+            <Box ml='45px' mb='200px'>
+              <ScheduleRead
+                arrayOfSchedules={horarioData}
+                scheme={scheme}
+              ></ScheduleRead>
             </Box>
           </Box>
         </Wrapper>

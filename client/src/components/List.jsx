@@ -42,14 +42,16 @@ function createNRCDict(items, errors, setErrors, student, toast) {
       result.error = true;
       result.mat = property;
     }
-
-    console.log(`${property}: ${dict[property]}`);
   }
   if (result.error) {
-    setErrors({ ...errors, list: true });
+    setErrors((err) => {
+      return { ...err, list: true };
+    });
     matIsRequired(toast, result.mat);
   } else {
-    setErrors({ ...errors, list: false });
+    setErrors((err) => {
+      return { ...err, list: false };
+    });
   }
 
   return dict;
@@ -59,40 +61,26 @@ export default function List({ items = [], student }) {
   const toast = useToast();
 
   const { errors, setErrors } = useErrors();
-  const [selected, setSelected] = useState([]);
   const [nrcDic, setNrcDic] = useState({});
   const { lectureSelections, setLectureSelections } = useLectureSelections(); //! Usar este
   const { blockedNRC, setblockedNRC } = useBlockedNRC();
   const { blockedNRCProf } = useBlockedNRCProf();
   const blocked = [...new Set([...blockedNRC, ...blockedNRCProf])];
   useEffect(() => {
-    console.log('Change');
     if (Object.entries(student).length !== 0)
       setNrcDic(createNRCDict(items, errors, setErrors, student, toast));
-  }, [items, selected, blockedNRC, blockedNRCProf, lectureSelections]);
+  }, [items, blockedNRC, blockedNRCProf, lectureSelections]);
 
   // ? Puedo guardar solo los NRC a ver
   const clickHandler = (ele, add = true) => {
     if (add) {
-      setSelected([...selected, ele]);
+      setLectureSelections([...lectureSelections, ele]);
     } else {
-      const newArray = deleteValue(selected, (el) => {
+      const newArray = deleteValue(lectureSelections, (el) => {
         return el === ele;
       });
-      setSelected([...newArray]);
+      setLectureSelections([...newArray]);
     }
-  };
-  //! CHANGE THIS TO FETCH THE LECTURES in Effect
-  const setLectures = () => {
-    let selectedNRC = [];
-    items.forEach((item) => {
-      //Agrego las seleccionadas que no estén bloqueadas
-      if (!item.isBlocked && selected.indexOf(item.nrc) !== -1) {
-        selectedNRC.push(item.nrc);
-      }
-    });
-    //! Solo mando lo que necesito, perfect para tirar la query console.log('selectedNRC', selectedNRC);
-    setLectureSelections(selectedNRC);
   };
   return (
     <Flex direction='column'>
@@ -108,7 +96,7 @@ export default function List({ items = [], student }) {
             item.isBlocked = true;
           } else {
             item.isBlocked = false;
-            if (selected.indexOf(item.nrc) !== -1) {
+            if (lectureSelections.indexOf(item.nrc) !== -1) {
               isSelected = true;
             }
           }
@@ -124,7 +112,7 @@ export default function List({ items = [], student }) {
         })}
       </Box>
       <Button
-        onClick={setLectures}
+        onClick={null}
         leftIcon={<BsArrowCounterclockwise />}
         bg='orange.600'
         color='white'

@@ -13,9 +13,11 @@ import { useLectureSelections } from '../contexts/LectureSelections';
 import axios from 'axios';
 
 function postNRCHorario(NRC_list, id) {
+  console.log('NRC_list', NRC_list);
   axios
     .post(`http://localhost:3001/api/estudiantes/horarios/${id}`, {
       NRC_list,
+      id,
     })
     .then(function (response) {
       console.log(response);
@@ -25,7 +27,7 @@ function postNRCHorario(NRC_list, id) {
     });
 }
 
-export default function Filters({ items }) {
+export default function Filters({ items, student }) {
   //! Agregar conexión con el limpiar filtros
   const { errors, setErrors } = useErrors();
   const [isModalOpen, setisModalOpen] = useState(false);
@@ -108,7 +110,7 @@ export default function Filters({ items }) {
       </Button>
       <Button
         isDisabled={block}
-        onClick={() => postNRCHorario(lectureSelections, 3)}
+        onClick={() => postNRCHorario(lectureSelections, student.codigo)}
         leftIcon={<BsPlus />}
         bg='orange.600'
         color='white'

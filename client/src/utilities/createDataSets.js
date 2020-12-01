@@ -1,7 +1,6 @@
 import { composeIndex } from './translators';
 
 export function createDataSets(generalData) {
-  console.log('generalData', generalData);
   let hourArray = {};
   let listArray = [];
   let profArray = [];
@@ -10,17 +9,18 @@ export function createDataSets(generalData) {
     let {
       materia,
       nrc,
+      curso,
       nombreAsignatura,
       nombreProfesor,
-      tipo,
       hora,
       dia,
       codDoc,
       semestreAsig,
     } = generalData[index];
-    materia = materia.toUpperCase();
+    materia = materia.toUpperCase().trim();
+    nrc = curso;
     nrc = nrc + '';
-    let idx = composeIndex(hora, dia);
+    let idx = composeIndex(hora.trim(), dia.trim());
     //Solo si el nrc no ha sido visto
     if (!nrcSet.has(nrc)) {
       nrcSet.add(nrc);
@@ -32,11 +32,10 @@ export function createDataSets(generalData) {
         nombreProfesor,
         isBlocked: false,
         semestreAsig,
-        tipo,
       });
       profArray.push({ nrc, nombreProfesor, codDoc, isBlocked: false });
     } else {
-      hourArray[nrc].indexes.push(idx);
+      hourArray[nrc].indexes.push(idx); // 8-2 9-2
     }
     //!  esto es para los horarios
   }
