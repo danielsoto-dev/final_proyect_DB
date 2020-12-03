@@ -11,7 +11,17 @@ import { getTableById, downloadCVS } from '../utilities/TableCVSExporter';
 import { useErrors } from '../contexts/Errors';
 import { useLectureSelections } from '../contexts/LectureSelections';
 import axios from 'axios';
+import { useToast } from '@chakra-ui/core';
 
+const registroExitoso = (toast) => {
+  toast({
+    title: '¡Horario agredado exitosamente!',
+    description: 'Ya puedes consultar tu horario',
+    status: 'success',
+    isClosable: true,
+    position: 'top',
+  });
+};
 function postNRCHorario(NRC_list, id) {
   console.log('NRC_list', NRC_list);
   axios
@@ -29,6 +39,7 @@ function postNRCHorario(NRC_list, id) {
 
 export default function Filters({ items, student }) {
   //! Agregar conexión con el limpiar filtros
+  const toast = useToast();
   const { errors, setErrors } = useErrors();
   const [isModalOpen, setisModalOpen] = useState(false);
   const [selectedProf, setSelectedProf] = useState([]);
@@ -110,7 +121,10 @@ export default function Filters({ items, student }) {
       </Button>
       <Button
         isDisabled={block}
-        onClick={() => postNRCHorario(lectureSelections, student.codigo)}
+        onClick={() => {
+          postNRCHorario(lectureSelections, student.codigo);
+          registroExitoso(toast);
+        }}
         leftIcon={<BsPlus />}
         bg='orange.600'
         color='white'
@@ -119,7 +133,9 @@ export default function Filters({ items, student }) {
       </Button>
       <Button
         isDisabled={block}
-        onClick={() => downloadCVS(getTableById('mainTable'))}
+        onClick={() => {
+          downloadCVS(getTableById('mainTable'));
+        }}
         leftIcon={<RiFileExcel2Line />}
         bg='orange.600'
         color='white'

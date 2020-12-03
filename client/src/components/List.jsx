@@ -4,7 +4,6 @@ import deleteValue from '../utilities/deleteValue'; //This is de API fetch
 import { useLectureSelections } from '../contexts/LectureSelections';
 import { useBlockedNRC } from '../contexts/BlockedNRC';
 import { useBlockedNRCProf } from '../contexts/BlockedNRCProf';
-import { BsArrowCounterclockwise } from 'react-icons/bs';
 import { Box, Button, Text, Flex } from '@chakra-ui/core';
 import { useErrors } from '../contexts/Errors';
 import { useToast } from '@chakra-ui/core';

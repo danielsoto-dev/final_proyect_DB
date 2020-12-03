@@ -8,7 +8,6 @@ import { useHourFilters } from '../contexts/HourFilters';
 import { useBlockedNRC } from '../contexts/BlockedNRC';
 import { useToast } from '@chakra-ui/core';
 import { useErrors } from '../contexts/Errors';
-import { RiWindowLine } from 'react-icons/ri';
 
 const collisionDetected = (toast, NRCs) => {
   toast({
