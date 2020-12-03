@@ -62,12 +62,13 @@ function collisionChecker(selectedNRC, hourDict) {
   }
   let iter_hours = Object.entries(hours);
   let collisionNRC = [];
-  for (let i = 0; i < iter_hours.length; i++) {
+  for (let i = 0; i < iter_hours.length - 1; i++) {
     const tags = iter_hours[i][1];
-    for (let j = i; j < iter_hours.length - 1; j++) {
-      let inner_tags = iter_hours[i + 1][1];
+    for (let j = i + 1; j < iter_hours.length; j++) {
+      let inner_tags = iter_hours[j][1];
       if (tags.some((tag) => inner_tags.includes(tag))) {
-        collisionNRC.push(`${iter_hours[i][0]}-${iter_hours[i + 1][0]}`);
+        collisionNRC.push(`${iter_hours[i][0]}-${iter_hours[j][0]}`);
+        console.log(`${iter_hours[i][0]}-${iter_hours[j][0]}`);
       }
     }
   }

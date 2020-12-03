@@ -111,16 +111,6 @@ export default function List({ items = [], student }) {
           );
         })}
       </Box>
-      <Button
-        onClick={null}
-        leftIcon={<BsArrowCounterclockwise />}
-        bg='orange.600'
-        color='white'
-        variant='solid'
-        mt='20px'
-      >
-        Actualizar asignaturas
-      </Button>
     </Flex>
   );
 }

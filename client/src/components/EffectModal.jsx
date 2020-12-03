@@ -19,6 +19,7 @@ export default function EffectModal({
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
+
         <ModalContent>
           <ModalHeader>{effectTitle}</ModalHeader>
           <ModalCloseButton />
