@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import EffectModal from './EffectModal';
-import { useHourFilters } from '../contexts/HourFilters';
-import { Button, Flex } from '@chakra-ui/core';
-import { BsFilter, BsTrash, BsPlus } from 'react-icons/bs';
-import { RiFileExcel2Line } from 'react-icons/ri';
-import { useBlockedNRCProf } from '../contexts/BlockedNRCProf';
-import ProfesorItem from './ProfesorItem';
-import deleteValue from '../utilities/deleteValue';
-import { getTableById, downloadCVS } from '../utilities/TableCVSExporter';
-import { useErrors } from '../contexts/Errors';
-import { useLectureSelections } from '../contexts/LectureSelections';
-import axios from 'axios';
-import { useToast } from '@chakra-ui/core';
+import React, { useState, useEffect } from "react";
+import EffectModal from "./EffectModal";
+import { useHourFilters } from "../contexts/HourFilters";
+import { Button, Flex } from "@chakra-ui/core";
+import { BsFilter, BsTrash, BsPlus } from "react-icons/bs";
+import { RiFileExcel2Line } from "react-icons/ri";
+import { useBlockedNRCProf } from "../contexts/BlockedNRCProf";
+import ProfesorItem from "./ProfesorItem";
+import deleteValue from "../utilities/deleteValue";
+import { getTableById, downloadCVS } from "../utilities/TableCVSExporter";
+import { useErrors } from "../contexts/Errors";
+import { useLectureSelections } from "../contexts/LectureSelections";
+import axios from "axios";
+import { useToast } from "@chakra-ui/core";
 
 const registroExitoso = (toast) => {
   toast({
-    title: '¡Horario agredado exitosamente!',
-    description: 'Ya puedes consultar tu horario',
-    status: 'success',
+    title: "¡Horario agredado exitosamente!",
+    description: "Ya puedes consultar tu horario",
+    status: "success",
     isClosable: true,
-    position: 'top',
+    position: "top",
   });
 };
 function postNRCHorario(NRC_list, id) {
-  console.log('NRC_list', NRC_list);
+  console.log("NRC_list", NRC_list);
   axios
     .post(`http://localhost:3001/api/estudiantes/horarios/${id}`, {
       NRC_list,
@@ -71,22 +71,22 @@ export default function Filters({ items, student }) {
 
   return (
     <Flex
-      mt='20px'
-      padding='25px'
-      direction='column'
-      justify='space-around'
-      h='275px'
+      mt="20px"
+      padding="25px"
+      direction="column"
+      justify="space-around"
+      h="275px"
     >
       <Button
         onClick={() => setisModalOpen(true)}
         leftIcon={<BsFilter />}
-        bg='orange.600'
-        color='white'
+        bg="black"
+        color="white"
       >
         Filtrar Profesores
       </Button>
       <EffectModal
-        effectTitle='Seleccione a sus profesores'
+        effectTitle="Seleccione a sus profesores"
         isOpen={isModalOpen}
         onClose={() => setisModalOpen(false)}
       >
@@ -114,8 +114,8 @@ export default function Filters({ items, student }) {
           setSelectedProf([]);
         }}
         leftIcon={<BsTrash />}
-        bg='orange.600'
-        color='white'
+        bg="black"
+        color="white"
       >
         Limpiar Filtros
       </Button>
@@ -126,19 +126,19 @@ export default function Filters({ items, student }) {
           registroExitoso(toast);
         }}
         leftIcon={<BsPlus />}
-        bg='orange.600'
-        color='white'
+        bg="black"
+        color="white"
       >
         Agregar Horario
       </Button>
       <Button
         isDisabled={block}
         onClick={() => {
-          downloadCVS(getTableById('mainTable'));
+          downloadCVS(getTableById("mainTable"));
         }}
         leftIcon={<RiFileExcel2Line />}
-        bg='orange.600'
-        color='white'
+        bg="black"
+        color="white"
       >
         Descargar CVS
       </Button>
